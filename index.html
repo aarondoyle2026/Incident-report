@@ -16,6 +16,7 @@ button {background:#00703c;color:white;padding:15px;width:100%;font-size:18px;bo
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
 </head>
 
@@ -49,62 +50,28 @@ button {background:#00703c;color:white;padding:15px;width:100%;font-size:18px;bo
 </div>
 
 <div class="section">
+
 <h3>Evidence Photos</h3>
 
 <label>Scene photo</label>
-<input type="file" accept="image/*" capture="environment">
+<input type="file" id="photo1" accept="image/*" capture="environment">
 
 <label>Additional photos</label>
-<input type="file" accept="image/*" multiple>
+<input type="file" id="photo2" accept="image/*" multiple>
 
-<label>Hazard photo</label>
-<input type="file" accept="image/*">
-
-<label>Product / shelf photo</label>
-<input type="file" accept="image/*">
-
-<label>Injury photo</label>
-<input type="file" accept="image/*">
-
-<label>Video clip</label>
-<input type="file" accept="video/*">
 </div>
 
 <div class="section">
-<h3>Witness Statements</h3>
 
-<label>Witness 1 statement</label>
-<textarea></textarea>
-<input type="file" accept="image/*">
+<h3>Manager Signature</h3>
 
-<label>Witness 2 statement</label>
-<textarea></textarea>
-<input type="file" accept="image/*">
-
-<label>Witness 3 statement</label>
-<textarea></textarea>
-<input type="file" accept="image/*">
-
-<label>Additional statement photos</label>
-<input type="file" accept="image/*" multiple>
-</div>
-
-<div class="section">
-<h3>Manager Section</h3>
-
-<label>Manager name</label>
-<input>
-
-<label>Treatment given</label>
-<textarea></textarea>
-
-<label>Manager Signature (sign with finger)</label>
 <canvas id="signature-pad" width="300" height="200"></canvas>
 
 <button class="small" onclick="clearSignature()">Clear Signature</button>
+
 </div>
 
-<button onclick="emailReport()">Share / Email Report</button>
+<button onclick="generateReport()">Generate & Email Report</button>
 
 <script>
 
@@ -113,19 +80,8 @@ let signaturePad;
 window.onload = function(){
 
 const canvas = document.getElementById("signature-pad");
+
 signaturePad = new SignaturePad(canvas);
-
-/* Fill report if opened from emailed link */
-
-const params = new URLSearchParams(window.location.search);
-
-if(params.get("store")) document.getElementById("store").value = params.get("store");
-if(params.get("manager")) document.getElementById("manager").value = params.get("manager");
-if(params.get("date")) document.getElementById("date").value = params.get("date");
-if(params.get("time")) document.getElementById("time").value = params.get("time");
-if(params.get("location")) document.getElementById("location").value = params.get("location");
-if(params.get("description")) document.getElementById("description").value = params.get("description");
-if(params.get("cause")) document.getElementById("cause").value = params.get("cause");
 
 }
 
@@ -133,7 +89,9 @@ function clearSignature(){
 signaturePad.clear();
 }
 
-function emailReport(){
+async function generateReport(){
+
+const { jsPDF } = window.jspdf;
 
 let store = document.getElementById("store").value;
 let manager = document.getElementById("manager").value;
@@ -143,26 +101,62 @@ let location = document.getElementById("location").value;
 let description = document.getElementById("description").value;
 let cause = document.getElementById("cause").value;
 
-let reportLink =
-`https://aarondoyle2026.github.io/Incident-report/?store=${encodeURIComponent(store)}&manager=${encodeURIComponent(manager)}&date=${date}&time=${time}&location=${encodeURIComponent(location)}&description=${encodeURIComponent(description)}&cause=${encodeURIComponent(cause)}`;
+let pdf = new jsPDF();
 
-let subject = `SuperValu Incident Report - ${store} - ${date}`;
+pdf.setFontSize(16);
 
-let body =
-`A SuperValu incident report has been submitted.
+pdf.text("Moriarty Group (SuperValu)",20,20);
+pdf.text("Accident / Incident Report",20,30);
 
-Store: ${store}
-Manager: ${manager}
-Date: ${date}
-Time: ${time}
+pdf.setFontSize(12);
 
-Open the completed report here:
-${reportLink}
+pdf.text(`Store: ${store}`,20,50);
+pdf.text(`Manager: ${manager}`,20,60);
+pdf.text(`Date: ${date}`,20,70);
+pdf.text(`Time: ${time}`,20,80);
 
-The report can be printed or saved as a PDF from a computer.`;
+pdf.text(`Location: ${location}`,20,100);
 
-window.location.href =
-`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+pdf.text("Description:",20,120);
+pdf.text(description,20,130);
+
+pdf.text("Cause:",20,160);
+pdf.text(cause,20,170);
+
+if(!signaturePad.isEmpty()){
+
+let signature = signaturePad.toDataURL();
+
+pdf.text("Manager Signature:",20,200);
+
+pdf.addImage(signature,'PNG',20,210,60,30);
+
+}
+
+let pdfBlob = pdf.output("blob");
+
+let file = new File([pdfBlob],"Incident_Report.pdf",{type:"application/pdf"});
+
+if(navigator.share){
+
+navigator.share({
+
+title:"SuperValu Incident Report",
+files:[file]
+
+});
+
+}else{
+
+let link = document.createElement("a");
+
+link.href = URL.createObjectURL(pdfBlob);
+
+link.download = "Incident_Report.pdf";
+
+link.click();
+
+}
 
 }
 

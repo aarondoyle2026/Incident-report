@@ -5,14 +5,14 @@
 <title>SuperValu Accident / Incident Report</title>
 
 <style>
-body {font-family: Arial; margin:20px; background:#f5f5f5;}
-h2 {text-align:center;}
-label {font-weight:bold; display:block; margin-top:10px;}
-input, textarea {width:100%; padding:10px; margin-top:5px; margin-bottom:10px; font-size:16px;}
-.section {background:white;padding:15px;margin-bottom:15px;border-radius:6px;}
-button {background:#00703c;color:white;padding:15px;width:100%;font-size:18px;border:none;border-radius:5px;margin-top:10px;}
-#signature-pad {border:2px solid #ccc;background:white;width:100%;height:200px;}
-.small {background:#666;}
+body{font-family:Arial;margin:20px;background:#f5f5f5;}
+h2{text-align:center;}
+label{font-weight:bold;display:block;margin-top:10px;}
+input,textarea{width:100%;padding:10px;margin-top:5px;margin-bottom:10px;font-size:16px;}
+.section{background:white;padding:15px;margin-bottom:15px;border-radius:6px;}
+button{background:#00703c;color:white;padding:15px;width:100%;font-size:18px;border:none;border-radius:5px;margin-top:10px;}
+#signature-pad{border:2px solid #ccc;background:white;width:100%;height:200px;}
+.small{background:#666;}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
@@ -74,13 +74,8 @@ button {background:#00703c;color:white;padding:15px;width:100%;font-size:18px;bo
 
 <h3>Scene Photos</h3>
 
-<label>Scene Photo 1</label>
 <input type="file" id="scene1" accept="image/*" capture="environment">
-
-<label>Scene Photo 2</label>
 <input type="file" id="scene2" accept="image/*" capture="environment">
-
-<label>Scene Photo 3</label>
 <input type="file" id="scene3" accept="image/*" capture="environment">
 
 </div>
@@ -89,13 +84,8 @@ button {background:#00703c;color:white;padding:15px;width:100%;font-size:18px;bo
 
 <h3>Additional Photos</h3>
 
-<label>Additional Photo 1</label>
 <input type="file" id="add1" accept="image/*">
-
-<label>Additional Photo 2</label>
 <input type="file" id="add2" accept="image/*">
-
-<label>Additional Photo 3</label>
 <input type="file" id="add3" accept="image/*">
 
 </div>
@@ -104,13 +94,8 @@ button {background:#00703c;color:white;padding:15px;width:100%;font-size:18px;bo
 
 <h3>Video Evidence</h3>
 
-<label>Video Clip 1</label>
 <input type="file" id="v1" accept="video/*">
-
-<label>Video Clip 2</label>
 <input type="file" id="v2" accept="video/*">
-
-<label>Video Clip 3</label>
 <input type="file" id="v3" accept="video/*">
 
 </div>
@@ -127,82 +112,52 @@ button {background:#00703c;color:white;padding:15px;width:100%;font-size:18px;bo
 
 <button onclick="generateReport()">Generate & Email Report</button>
 
-
 <script>
 
 let signaturePad;
 
 window.onload=function(){
-
 const canvas=document.getElementById("signature-pad");
-
 canvas.width=canvas.offsetWidth;
 canvas.height=200;
-
 signaturePad=new SignaturePad(canvas);
-
 }
 
 function clearSignature(){
 signaturePad.clear();
 }
 
-/* IMAGE COMPRESSION */
-
 function readImage(file){
 return new Promise(resolve=>{
-
 let reader=new FileReader();
-
 reader.onload=function(e){
-
 let img=new Image();
-
 img.onload=function(){
-
 let canvas=document.createElement("canvas");
-
-let maxWidth=1200;
+let maxWidth=1000;
 let scale=maxWidth/img.width;
-
 canvas.width=maxWidth;
 canvas.height=img.height*scale;
-
 let ctx=canvas.getContext("2d");
-
 ctx.drawImage(img,0,0,canvas.width,canvas.height);
-
-let compressed=canvas.toDataURL("image/jpeg",0.6);
-
+let compressed=canvas.toDataURL("image/jpeg",0.55);
 resolve(compressed);
-
 };
-
 img.src=e.target.result;
-
 };
-
 reader.readAsDataURL(file);
-
 });
 }
 
-
 async function addPhotoPage(pdf,file,title){
-
 if(!file) return;
-
 let img=await readImage(file);
-
 pdf.addPage();
-
+pdf.setFont("helvetica","bold");
 pdf.setFontSize(16);
 pdf.text(title,20,20);
-
 pdf.addImage(img,'JPEG',15,30,180,130);
-
 }
-
 
 async function generateReport(){
 
@@ -218,12 +173,19 @@ let location=document.getElementById("location").value;
 let description=document.getElementById("description").value;
 let cause=document.getElementById("cause").value;
 
+pdf.setFont("helvetica","bold");
 pdf.setFontSize(18);
-pdf.text("SuperValu Accident / Incident Report",20,20);
+pdf.text("MORIARTY GROUP (SUPERVALU)",20,20);
 
+pdf.setFontSize(16);
+pdf.text("ACCIDENT / INCIDENT REPORT FORM",20,30);
+
+pdf.line(20,35,190,35);
+
+pdf.setFont("helvetica","normal");
 pdf.setFontSize(12);
 
-let y=40;
+let y=50;
 
 pdf.text(`Store: ${store}`,20,y); y+=10;
 pdf.text(`Manager: ${manager}`,20,y); y+=10;
@@ -231,38 +193,49 @@ pdf.text(`Date: ${date}`,20,y); y+=10;
 pdf.text(`Time: ${time}`,20,y); y+=10;
 pdf.text(`Location: ${location}`,20,y); y+=15;
 
-pdf.text("Description:",20,y); y+=10;
-pdf.text(pdf.splitTextToSize(description,170),20,y); y+=25;
+pdf.setFont("helvetica","bold");
+pdf.text("Description of Incident",20,y); y+=10;
 
-pdf.text("Cause:",20,y); y+=10;
+pdf.setFont("helvetica","normal");
+pdf.text(pdf.splitTextToSize(description,170),20,y); y+=30;
+
+pdf.setFont("helvetica","bold");
+pdf.text("Cause of Accident",20,y); y+=10;
+
+pdf.setFont("helvetica","normal");
 pdf.text(pdf.splitTextToSize(cause,170),20,y);
 
 if(!signaturePad.isEmpty()){
-
 let sig=signaturePad.toDataURL();
-
-pdf.text("Manager Signature:",20,210);
-
+pdf.text("Store Manager Signature:",20,210);
 pdf.addImage(sig,'PNG',20,215,60,30);
-
 }
 
 pdf.addPage();
 
+pdf.setFont("helvetica","bold");
 pdf.setFontSize(16);
 pdf.text("Witness Statements",20,20);
+pdf.line(20,25,190,25);
 
+pdf.setFont("helvetica","normal");
 pdf.setFontSize(12);
 
-pdf.text("Witness 1:",20,40);
-pdf.text(pdf.splitTextToSize(document.getElementById("w1").value,170),20,50);
+let wy=40;
 
-pdf.text("Witness 2:",20,90);
-pdf.text(pdf.splitTextToSize(document.getElementById("w2").value,170),20,100);
+pdf.text("Witness 1:",20,wy);
+wy+=10;
+pdf.text(pdf.splitTextToSize(document.getElementById("w1").value,170),20,wy);
+wy+=30;
 
-pdf.text("Witness 3:",20,140);
-pdf.text(pdf.splitTextToSize(document.getElementById("w3").value,170),20,150);
+pdf.text("Witness 2:",20,wy);
+wy+=10;
+pdf.text(pdf.splitTextToSize(document.getElementById("w2").value,170),20,wy);
+wy+=30;
 
+pdf.text("Witness 3:",20,wy);
+wy+=10;
+pdf.text(pdf.splitTextToSize(document.getElementById("w3").value,170),20,wy);
 
 await addPhotoPage(pdf,document.getElementById("scene1").files[0],"Scene Photo 1");
 await addPhotoPage(pdf,document.getElementById("scene2").files[0],"Scene Photo 2");
@@ -276,28 +249,37 @@ await addPhotoPage(pdf,document.getElementById("w1p").files[0],"Witness 1 Photo"
 await addPhotoPage(pdf,document.getElementById("w2p").files[0],"Witness 2 Photo");
 await addPhotoPage(pdf,document.getElementById("w3p").files[0],"Witness 3 Photo");
 
+let v1=document.getElementById("v1").files[0];
+let v2=document.getElementById("v2").files[0];
+let v3=document.getElementById("v3").files[0];
+
+if(v1||v2||v3){
+pdf.addPage();
+pdf.setFont("helvetica","bold");
+pdf.setFontSize(16);
+pdf.text("Video Evidence Recorded",20,20);
+pdf.setFont("helvetica","normal");
+pdf.setFontSize(12);
+let vy=40;
+if(v1){pdf.text("Video 1: "+v1.name,20,vy);vy+=10;}
+if(v2){pdf.text("Video 2: "+v2.name,20,vy);vy+=10;}
+if(v3){pdf.text("Video 3: "+v3.name,20,vy);vy+=10;}
+}
 
 let blob=pdf.output("blob");
-
 let filename=`SV_${store}_${date}.pdf`;
-
 let file=new File([blob],filename,{type:"application/pdf"});
 
-
 if(navigator.share){
-
 navigator.share({
 title:"SuperValu Incident Report",
 files:[file]
 });
-
 }else{
-
 let link=document.createElement("a");
 link.href=URL.createObjectURL(blob);
 link.download=filename;
 link.click();
-
 }
 
 }

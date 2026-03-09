@@ -11,7 +11,7 @@ label {font-weight:bold;}
 input, textarea {width:100%; padding:10px; margin-top:5px; margin-bottom:15px; font-size:16px;}
 .section {background:white;padding:15px;margin-bottom:15px;border-radius:6px;}
 button {background:#00703c;color:white;padding:15px;width:100%;font-size:18px;border:none;border-radius:5px;margin-top:10px;}
-#signature-pad {border:2px solid #ccc;border-radius:4px;background:white;}
+#signature-pad {border:2px solid #ccc;background:white;width:100%;height:200px;}
 .small {background:#666;}
 </style>
 
@@ -25,6 +25,7 @@ button {background:#00703c;color:white;padding:15px;width:100%;font-size:18px;bo
 <h2>Moriarty Group (SuperValu)<br>Accident / Incident Report</h2>
 
 <div class="section">
+
 <label>Store</label>
 <input id="store">
 
@@ -36,9 +37,11 @@ button {background:#00703c;color:white;padding:15px;width:100%;font-size:18px;bo
 
 <label>Time</label>
 <input type="time" id="time">
+
 </div>
 
 <div class="section">
+
 <label>Exact location in store</label>
 <input id="location">
 
@@ -47,17 +50,36 @@ button {background:#00703c;color:white;padding:15px;width:100%;font-size:18px;bo
 
 <label>Cause of accident</label>
 <textarea id="cause"></textarea>
+
 </div>
 
 <div class="section">
 
-<h3>Evidence Photos</h3>
+<h3>Witness Statements</h3>
 
-<label>Scene photo</label>
+<label>Witness 1</label>
+<textarea id="witness1"></textarea>
+
+<label>Witness 2</label>
+<textarea id="witness2"></textarea>
+
+<label>Witness 3</label>
+<textarea id="witness3"></textarea>
+
+</div>
+
+<div class="section">
+
+<h3>Evidence</h3>
+
+<label>Scene Photo</label>
 <input type="file" id="photo1" accept="image/*" capture="environment">
 
-<label>Additional photos</label>
+<label>Additional Photos</label>
 <input type="file" id="photo2" accept="image/*" multiple>
+
+<label>Video Clip</label>
+<input type="file" id="video" accept="video/*">
 
 </div>
 
@@ -65,7 +87,7 @@ button {background:#00703c;color:white;padding:15px;width:100%;font-size:18px;bo
 
 <h3>Manager Signature</h3>
 
-<canvas id="signature-pad" width="300" height="200"></canvas>
+<canvas id="signature-pad"></canvas>
 
 <button class="small" onclick="clearSignature()">Clear Signature</button>
 
@@ -80,6 +102,10 @@ let signaturePad;
 window.onload = function(){
 
 const canvas = document.getElementById("signature-pad");
+
+canvas.width = canvas.offsetWidth;
+canvas.height = 200;
+
 signaturePad = new SignaturePad(canvas);
 
 }
@@ -88,17 +114,21 @@ function clearSignature(){
 signaturePad.clear();
 }
 
-function readFile(file){
-return new Promise((resolve)=>{
+function readImage(file){
+
+return new Promise(resolve=>{
 let reader = new FileReader();
-reader.onload = () => resolve(reader.result);
+reader.onload = e => resolve(e.target.result);
 reader.readAsDataURL(file);
-});
+})
+
 }
 
 async function generateReport(){
 
 const { jsPDF } = window.jspdf;
+
+let pdf = new jsPDF();
 
 let store = document.getElementById("store").value;
 let manager = document.getElementById("manager").value;
@@ -108,67 +138,89 @@ let location = document.getElementById("location").value;
 let description = document.getElementById("description").value;
 let cause = document.getElementById("cause").value;
 
-let pdf = new jsPDF();
+let witness1 = document.getElementById("witness1").value;
+let witness2 = document.getElementById("witness2").value;
+let witness3 = document.getElementById("witness3").value;
 
-pdf.setFontSize(16);
-pdf.text("Moriarty Group (SuperValu)",20,20);
-pdf.text("Accident / Incident Report",20,30);
+let y = 20;
+
+pdf.setFontSize(18);
+pdf.text("SuperValu Accident / Incident Report",20,y);
+
+y+=15;
 
 pdf.setFontSize(12);
 
-pdf.text(`Store: ${store}`,20,50);
-pdf.text(`Manager: ${manager}`,20,60);
-pdf.text(`Date: ${date}`,20,70);
-pdf.text(`Time: ${time}`,20,80);
+pdf.text(`Store: ${store}`,20,y); y+=10;
+pdf.text(`Manager: ${manager}`,20,y); y+=10;
+pdf.text(`Date: ${date}`,20,y); y+=10;
+pdf.text(`Time: ${time}`,20,y); y+=10;
+pdf.text(`Location: ${location}`,20,y); y+=15;
 
-pdf.text(`Location: ${location}`,20,100);
+pdf.text("Description:",20,y); y+=10;
+pdf.text(pdf.splitTextToSize(description,170),20,y); y+=20;
 
-pdf.text("Description:",20,120);
-pdf.text(description,20,130);
+pdf.text("Cause:",20,y); y+=10;
+pdf.text(pdf.splitTextToSize(cause,170),20,y); y+=20;
 
-pdf.text("Cause:",20,160);
-pdf.text(cause,20,170);
+pdf.text("Witness Statements:",20,y); y+=10;
+
+pdf.text("Witness 1:",20,y); y+=8;
+pdf.text(pdf.splitTextToSize(witness1,170),20,y); y+=15;
+
+pdf.text("Witness 2:",20,y); y+=8;
+pdf.text(pdf.splitTextToSize(witness2,170),20,y); y+=15;
+
+pdf.text("Witness 3:",20,y); y+=8;
+pdf.text(pdf.splitTextToSize(witness3,170),20,y); y+=15;
 
 if(!signaturePad.isEmpty()){
 
-let signature = signaturePad.toDataURL();
-pdf.text("Manager Signature:",20,200);
-pdf.addImage(signature,'PNG',20,210,60,30);
+let sig = signaturePad.toDataURL();
+
+pdf.text("Manager Signature:",20,y);
+pdf.addImage(sig,'PNG',20,y+5,60,30);
+
+y+=40;
 
 }
-
-let y = 250;
 
 let photo1 = document.getElementById("photo1").files[0];
 let photo2 = document.getElementById("photo2").files;
 
 if(photo1){
 
-let img = await readFile(photo1);
+let img = await readImage(photo1);
 
 pdf.addPage();
 pdf.text("Scene Photo",20,20);
-pdf.addImage(img,'JPEG',15,30,180,120);
+pdf.addImage(img,'JPEG',20,30,170,120);
 
 }
-
-if(photo2.length > 0){
 
 for(let i=0;i<photo2.length;i++){
 
-let img = await readFile(photo2[i]);
+let img = await readImage(photo2[i]);
 
 pdf.addPage();
 pdf.text("Additional Photo",20,20);
-pdf.addImage(img,'JPEG',15,30,180,120);
+pdf.addImage(img,'JPEG',20,30,170,120);
 
 }
 
+let video = document.getElementById("video").files[0];
+
+if(video){
+
+pdf.addPage();
+pdf.text("Video Evidence Recorded",20,20);
+pdf.text(video.name,20,40);
+
 }
 
-let pdfBlob = pdf.output("blob");
+let blob = pdf.output("blob");
 
-let file = new File([pdfBlob],"Incident_Report.pdf",{type:"application/pdf"});
+let file = new File([blob],"Incident_Report.pdf",{type:"application/pdf"});
 
 if(navigator.share){
 
@@ -179,9 +231,9 @@ files:[file]
 
 }else{
 
-let link = document.createElement("a");
-link.href = URL.createObjectURL(pdfBlob);
-link.download = "Incident_Report.pdf";
+let link=document.createElement("a");
+link.href=URL.createObjectURL(blob);
+link.download="Incident_Report.pdf";
 link.click();
 
 }

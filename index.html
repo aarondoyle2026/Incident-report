@@ -80,13 +80,20 @@ let signaturePad;
 window.onload = function(){
 
 const canvas = document.getElementById("signature-pad");
-
 signaturePad = new SignaturePad(canvas);
 
 }
 
 function clearSignature(){
 signaturePad.clear();
+}
+
+function readFile(file){
+return new Promise((resolve)=>{
+let reader = new FileReader();
+reader.onload = () => resolve(reader.result);
+reader.readAsDataURL(file);
+});
 }
 
 async function generateReport(){
@@ -104,7 +111,6 @@ let cause = document.getElementById("cause").value;
 let pdf = new jsPDF();
 
 pdf.setFontSize(16);
-
 pdf.text("Moriarty Group (SuperValu)",20,20);
 pdf.text("Accident / Incident Report",20,30);
 
@@ -126,10 +132,37 @@ pdf.text(cause,20,170);
 if(!signaturePad.isEmpty()){
 
 let signature = signaturePad.toDataURL();
-
 pdf.text("Manager Signature:",20,200);
-
 pdf.addImage(signature,'PNG',20,210,60,30);
+
+}
+
+let y = 250;
+
+let photo1 = document.getElementById("photo1").files[0];
+let photo2 = document.getElementById("photo2").files;
+
+if(photo1){
+
+let img = await readFile(photo1);
+
+pdf.addPage();
+pdf.text("Scene Photo",20,20);
+pdf.addImage(img,'JPEG',15,30,180,120);
+
+}
+
+if(photo2.length > 0){
+
+for(let i=0;i<photo2.length;i++){
+
+let img = await readFile(photo2[i]);
+
+pdf.addPage();
+pdf.text("Additional Photo",20,20);
+pdf.addImage(img,'JPEG',15,30,180,120);
+
+}
 
 }
 
@@ -140,20 +173,15 @@ let file = new File([pdfBlob],"Incident_Report.pdf",{type:"application/pdf"});
 if(navigator.share){
 
 navigator.share({
-
 title:"SuperValu Incident Report",
 files:[file]
-
 });
 
 }else{
 
 let link = document.createElement("a");
-
 link.href = URL.createObjectURL(pdfBlob);
-
 link.download = "Incident_Report.pdf";
-
 link.click();
 
 }

@@ -38,11 +38,7 @@ button {background:#00703c;color:white;padding:15px;width:100%;font-size:18px;bo
 <label>Time</label>
 <input type="time" id="time">
 
-</div>
-
-<div class="section">
-
-<label>Exact location in store</label>
+<label>Exact location</label>
 <input id="location">
 
 <label>Description of incident</label>
@@ -57,29 +53,47 @@ button {background:#00703c;color:white;padding:15px;width:100%;font-size:18px;bo
 
 <h3>Witness Statements</h3>
 
-<label>Witness 1</label>
-<textarea id="witness1"></textarea>
+<label>Witness 1 Statement</label>
+<textarea id="w1"></textarea>
+<input type="file" id="w1p" accept="image/*">
 
-<label>Witness 2</label>
-<textarea id="witness2"></textarea>
+<label>Witness 2 Statement</label>
+<textarea id="w2"></textarea>
+<input type="file" id="w2p" accept="image/*">
 
-<label>Witness 3</label>
-<textarea id="witness3"></textarea>
+<label>Witness 3 Statement</label>
+<textarea id="w3"></textarea>
+<input type="file" id="w3p" accept="image/*">
 
 </div>
 
 <div class="section">
 
-<h3>Evidence</h3>
+<h3>Scene Photos</h3>
 
-<label>Scene Photo</label>
-<input type="file" id="photo1" accept="image/*" capture="environment">
+<input type="file" id="scene1" accept="image/*" capture="environment">
+<input type="file" id="scene2" accept="image/*" capture="environment">
+<input type="file" id="scene3" accept="image/*" capture="environment">
 
-<label>Additional Photos</label>
-<input type="file" id="photo2" accept="image/*" multiple>
+</div>
 
-<label>Video Clip</label>
-<input type="file" id="video" accept="video/*">
+<div class="section">
+
+<h3>Additional Photos</h3>
+
+<input type="file" id="add1" accept="image/*">
+<input type="file" id="add2" accept="image/*">
+<input type="file" id="add3" accept="image/*">
+
+</div>
+
+<div class="section">
+
+<h3>Video Evidence</h3>
+
+<input type="file" id="v1" accept="video/*">
+<input type="file" id="v2" accept="video/*">
+<input type="file" id="v3" accept="video/*">
 
 </div>
 
@@ -99,14 +113,13 @@ button {background:#00703c;color:white;padding:15px;width:100%;font-size:18px;bo
 
 let signaturePad;
 
-window.onload = function(){
+window.onload=function(){
 
-const canvas = document.getElementById("signature-pad");
+const canvas=document.getElementById("signature-pad");
+canvas.width=canvas.offsetWidth;
+canvas.height=200;
 
-canvas.width = canvas.offsetWidth;
-canvas.height = 200;
-
-signaturePad = new SignaturePad(canvas);
+signaturePad=new SignaturePad(canvas);
 
 }
 
@@ -115,12 +128,25 @@ signaturePad.clear();
 }
 
 function readImage(file){
-
 return new Promise(resolve=>{
-let reader = new FileReader();
-reader.onload = e => resolve(e.target.result);
+let reader=new FileReader();
+reader.onload=e=>resolve(e.target.result);
 reader.readAsDataURL(file);
-})
+});
+}
+
+async function addPhotoPage(pdf,file,title){
+
+if(!file) return;
+
+let img=await readImage(file);
+
+pdf.addPage();
+
+pdf.setFontSize(16);
+pdf.text(title,20,20);
+
+pdf.addImage(img,'JPEG',20,30,170,120);
 
 }
 
@@ -128,28 +154,22 @@ async function generateReport(){
 
 const { jsPDF } = window.jspdf;
 
-let pdf = new jsPDF();
+let pdf=new jsPDF();
 
-let store = document.getElementById("store").value;
-let manager = document.getElementById("manager").value;
-let date = document.getElementById("date").value;
-let time = document.getElementById("time").value;
-let location = document.getElementById("location").value;
-let description = document.getElementById("description").value;
-let cause = document.getElementById("cause").value;
-
-let witness1 = document.getElementById("witness1").value;
-let witness2 = document.getElementById("witness2").value;
-let witness3 = document.getElementById("witness3").value;
-
-let y = 20;
+let store=document.getElementById("store").value;
+let manager=document.getElementById("manager").value;
+let date=document.getElementById("date").value;
+let time=document.getElementById("time").value;
+let location=document.getElementById("location").value;
+let description=document.getElementById("description").value;
+let cause=document.getElementById("cause").value;
 
 pdf.setFontSize(18);
-pdf.text("SuperValu Accident / Incident Report",20,y);
-
-y+=15;
+pdf.text("SuperValu Accident / Incident Report",20,20);
 
 pdf.setFontSize(12);
+
+let y=40;
 
 pdf.text(`Store: ${store}`,20,y); y+=10;
 pdf.text(`Manager: ${manager}`,20,y); y+=10;
@@ -161,66 +181,63 @@ pdf.text("Description:",20,y); y+=10;
 pdf.text(pdf.splitTextToSize(description,170),20,y); y+=20;
 
 pdf.text("Cause:",20,y); y+=10;
-pdf.text(pdf.splitTextToSize(cause,170),20,y); y+=20;
-
-pdf.text("Witness Statements:",20,y); y+=10;
-
-pdf.text("Witness 1:",20,y); y+=8;
-pdf.text(pdf.splitTextToSize(witness1,170),20,y); y+=15;
-
-pdf.text("Witness 2:",20,y); y+=8;
-pdf.text(pdf.splitTextToSize(witness2,170),20,y); y+=15;
-
-pdf.text("Witness 3:",20,y); y+=8;
-pdf.text(pdf.splitTextToSize(witness3,170),20,y); y+=15;
+pdf.text(pdf.splitTextToSize(cause,170),20,y);
 
 if(!signaturePad.isEmpty()){
 
-let sig = signaturePad.toDataURL();
+let sig=signaturePad.toDataURL();
 
-pdf.text("Manager Signature:",20,y);
-pdf.addImage(sig,'PNG',20,y+5,60,30);
+pdf.text("Manager Signature:",20,230);
 
-y+=40;
+pdf.addImage(sig,'PNG',20,240,60,30);
 
 }
-
-let photo1 = document.getElementById("photo1").files[0];
-let photo2 = document.getElementById("photo2").files;
-
-if(photo1){
-
-let img = await readImage(photo1);
 
 pdf.addPage();
-pdf.text("Scene Photo",20,20);
-pdf.addImage(img,'JPEG',20,30,170,120);
 
-}
+pdf.text("Witness Statements",20,20);
 
-for(let i=0;i<photo2.length;i++){
+pdf.text("Witness 1:",20,40);
+pdf.text(document.getElementById("w1").value,20,50);
 
-let img = await readImage(photo2[i]);
+pdf.text("Witness 2:",20,80);
+pdf.text(document.getElementById("w2").value,20,90);
 
-pdf.addPage();
-pdf.text("Additional Photo",20,20);
-pdf.addImage(img,'JPEG',20,30,170,120);
+pdf.text("Witness 3:",20,120);
+pdf.text(document.getElementById("w3").value,20,130);
 
-}
+await addPhotoPage(pdf,document.getElementById("scene1").files[0],"Scene Photo 1");
+await addPhotoPage(pdf,document.getElementById("scene2").files[0],"Scene Photo 2");
+await addPhotoPage(pdf,document.getElementById("scene3").files[0],"Scene Photo 3");
 
-let video = document.getElementById("video").files[0];
+await addPhotoPage(pdf,document.getElementById("add1").files[0],"Additional Photo 1");
+await addPhotoPage(pdf,document.getElementById("add2").files[0],"Additional Photo 2");
+await addPhotoPage(pdf,document.getElementById("add3").files[0],"Additional Photo 3");
 
-if(video){
+await addPhotoPage(pdf,document.getElementById("w1p").files[0],"Witness 1 Photo");
+await addPhotoPage(pdf,document.getElementById("w2p").files[0],"Witness 2 Photo");
+await addPhotoPage(pdf,document.getElementById("w3p").files[0],"Witness 3 Photo");
+
+let v1=document.getElementById("v1").files[0];
+let v2=document.getElementById("v2").files[0];
+let v3=document.getElementById("v3").files[0];
+
+if(v1||v2||v3){
 
 pdf.addPage();
 pdf.text("Video Evidence Recorded",20,20);
-pdf.text(video.name,20,40);
+
+let y=40;
+
+if(v1){ pdf.text(v1.name,20,y); y+=10;}
+if(v2){ pdf.text(v2.name,20,y); y+=10;}
+if(v3){ pdf.text(v3.name,20,y); y+=10;}
 
 }
 
-let blob = pdf.output("blob");
+let blob=pdf.output("blob");
 
-let file = new File([blob],"Incident_Report.pdf",{type:"application/pdf"});
+let file=new File([blob],"Incident_Report.pdf",{type:"application/pdf"});
 
 if(navigator.share){
 

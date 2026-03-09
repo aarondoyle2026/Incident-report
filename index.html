@@ -49,7 +49,6 @@ button {background:#00703c;color:white;padding:15px;width:100%;font-size:18px;bo
 
 </div>
 
-
 <div class="section">
 
 <h3>Witness Statements</h3>
@@ -71,7 +70,6 @@ button {background:#00703c;color:white;padding:15px;width:100%;font-size:18px;bo
 
 </div>
 
-
 <div class="section">
 
 <h3>Scene Photos</h3>
@@ -86,7 +84,6 @@ button {background:#00703c;color:white;padding:15px;width:100%;font-size:18px;bo
 <input type="file" id="scene3" accept="image/*" capture="environment">
 
 </div>
-
 
 <div class="section">
 
@@ -103,7 +100,6 @@ button {background:#00703c;color:white;padding:15px;width:100%;font-size:18px;bo
 
 </div>
 
-
 <div class="section">
 
 <h3>Video Evidence</h3>
@@ -119,7 +115,6 @@ button {background:#00703c;color:white;padding:15px;width:100%;font-size:18px;bo
 
 </div>
 
-
 <div class="section">
 
 <h3>Manager Signature</h3>
@@ -129,7 +124,6 @@ button {background:#00703c;color:white;padding:15px;width:100%;font-size:18px;bo
 <button class="small" onclick="clearSignature()">Clear Signature</button>
 
 </div>
-
 
 <button onclick="generateReport()">Generate & Email Report</button>
 
@@ -153,12 +147,43 @@ function clearSignature(){
 signaturePad.clear();
 }
 
+/* IMAGE COMPRESSION */
 
 function readImage(file){
 return new Promise(resolve=>{
+
 let reader=new FileReader();
-reader.onload=e=>resolve(e.target.result);
+
+reader.onload=function(e){
+
+let img=new Image();
+
+img.onload=function(){
+
+let canvas=document.createElement("canvas");
+
+let maxWidth=1200;
+let scale=maxWidth/img.width;
+
+canvas.width=maxWidth;
+canvas.height=img.height*scale;
+
+let ctx=canvas.getContext("2d");
+
+ctx.drawImage(img,0,0,canvas.width,canvas.height);
+
+let compressed=canvas.toDataURL("image/jpeg",0.6);
+
+resolve(compressed);
+
+};
+
+img.src=e.target.result;
+
+};
+
 reader.readAsDataURL(file);
+
 });
 }
 
@@ -216,9 +241,9 @@ if(!signaturePad.isEmpty()){
 
 let sig=signaturePad.toDataURL();
 
-pdf.text("Manager Signature:",20,230);
+pdf.text("Manager Signature:",20,210);
 
-pdf.addImage(sig,'PNG',20,240,60,30);
+pdf.addImage(sig,'PNG',20,215,60,30);
 
 }
 
@@ -252,31 +277,11 @@ await addPhotoPage(pdf,document.getElementById("w2p").files[0],"Witness 2 Photo"
 await addPhotoPage(pdf,document.getElementById("w3p").files[0],"Witness 3 Photo");
 
 
-let v1=document.getElementById("v1").files[0];
-let v2=document.getElementById("v2").files[0];
-let v3=document.getElementById("v3").files[0];
-
-if(v1||v2||v3){
-
-pdf.addPage();
-
-pdf.setFontSize(16);
-pdf.text("Video Evidence Recorded",20,20);
-
-pdf.setFontSize(12);
-
-let y=40;
-
-if(v1){ pdf.text("Video 1: "+v1.name,20,y); y+=10;}
-if(v2){ pdf.text("Video 2: "+v2.name,20,y); y+=10;}
-if(v3){ pdf.text("Video 3: "+v3.name,20,y); y+=10;}
-
-}
-
-
 let blob=pdf.output("blob");
 
-let file=new File([blob],"Incident_Report.pdf",{type:"application/pdf"});
+let filename=`SV_${store}_${date}.pdf`;
+
+let file=new File([blob],filename,{type:"application/pdf"});
 
 
 if(navigator.share){
@@ -290,7 +295,7 @@ files:[file]
 
 let link=document.createElement("a");
 link.href=URL.createObjectURL(blob);
-link.download="Incident_Report.pdf";
+link.download=filename;
 link.click();
 
 }

@@ -5,49 +5,86 @@
 <title>Moriarty Group (SuperValu) Accident / Incident Report</title>
 
 <style>
-body{font-family:Arial,sans-serif;margin:20px;background:#f5f5f5;color:#111;}
-h2{text-align:center;margin-bottom:18px;line-height:1.15;}
-h3{margin:0 0 10px 0;}
-label{font-weight:bold;display:block;margin-top:10px;}
+
+body{
+font-family:Arial;
+margin:20px;
+background:#f5f5f5;
+color:#111;
+}
+
+h2{
+text-align:center;
+margin-bottom:20px;
+}
+
+h3{
+margin-bottom:10px;
+}
+
+label{
+font-weight:bold;
+display:block;
+margin-top:10px;
+}
+
 input,textarea{
-  width:100%;
-  padding:10px;
-  margin-top:5px;
-  margin-bottom:10px;
-  font-size:16px;
-  box-sizing:border-box;
+width:100%;
+padding:10px;
+margin-top:5px;
+margin-bottom:10px;
+font-size:16px;
+box-sizing:border-box;
 }
-textarea{min-height:70px;}
+
 .section{
-  background:#fff;
-  padding:15px;
-  margin-bottom:15px;
-  border-radius:6px;
-  border:1px solid #ddd;
+background:white;
+padding:15px;
+margin-bottom:15px;
+border-radius:6px;
+border:1px solid #ddd;
 }
+
 button{
-  background:#00703c;
-  color:#fff;
-  padding:15px;
-  width:100%;
-  font-size:18px;
-  border:none;
-  border-radius:5px;
-  margin-top:10px;
+background:#00703c;
+color:white;
+padding:15px;
+width:100%;
+font-size:18px;
+border:none;
+border-radius:5px;
+margin-top:10px;
 }
-.small{background:#666;}
-.inline2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.checkrow{display:flex;gap:15px;flex-wrap:wrap;margin:8px 0 14px 0;}
-.checkrow label{font-weight:normal;display:flex;align-items:center;gap:6px;margin:0;}
-.checkrow input{width:auto;margin:0;}
-#signature-pad{border:2px solid #ccc;background:#fff;width:100%;height:200px;touch-action:none;}
-@media (max-width:700px){
-  .inline2{grid-template-columns:1fr;}
+
+.small{
+background:#666;
 }
+
+.inline2{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.checkrow{
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+margin:8px 0;
+}
+
+#signature-pad{
+border:2px solid #ccc;
+background:white;
+width:100%;
+height:200px;
+}
+
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
 </head>
 
 <body>
@@ -55,590 +92,398 @@ button{
 <h2>Moriarty Group (SuperValu)<br>Accident / Incident Report Form</h2>
 
 <div class="section">
-  <h3>Store Details</h3>
 
-  <label>Store</label>
-  <input id="store">
+<label>Store</label>
+<input id="store">
 
-  <label>Manager</label>
-  <input id="manager">
+<label>Manager</label>
+<input id="manager">
 
-  <label>Phone Number</label>
-  <input id="phone">
+<label>Phone</label>
+<input id="phone">
 
-  <div class="inline2">
-    <div>
-      <label>Date</label>
-      <input type="date" id="date">
-    </div>
-    <div>
-      <label>Exact Time</label>
-      <input type="time" id="time">
-    </div>
-  </div>
+<div class="inline2">
+
+<div>
+<label>Date</label>
+<input type="date" id="date">
 </div>
+
+<div>
+<label>Time</label>
+<input type="time" id="time">
+</div>
+
+</div>
+
+</div>
+
 
 <div class="section">
-  <h3>Particulars of Accident</h3>
 
-  <label>1. State day, date and time of accident</label>
-  <textarea id="accident_datetime"></textarea>
+<h3>Particulars of Accident</h3>
 
-  <label>2. To whom and when was it reported</label>
-  <textarea id="reported_to_when"></textarea>
+<label>1. State day, date and time of accident</label>
+<textarea id="accident_datetime"></textarea>
 
-  <label>3. Who reported the accident</label>
-  <textarea id="reported_by"></textarea>
+<label>2. To whom and when was it reported</label>
+<textarea id="reported_to_when"></textarea>
 
-  <label>4. Where precisely did it happen? e.g. by reference to aisle / fixture / product</label>
-  <textarea id="location"></textarea>
+<label>3. Who reported the accident</label>
+<textarea id="reported_by"></textarea>
 
-  <label>5. State fully what happened</label>
-  <textarea id="description"></textarea>
+<label>4. Where precisely did it happen</label>
+<textarea id="location"></textarea>
 
-  <label>6. Cause of accident</label>
-  <textarea id="cause"></textarea>
+<label>5. State fully what happened</label>
+<textarea id="description"></textarea>
 
-  <label>7. Condition of floor</label>
-  <textarea id="floor_condition"></textarea>
+<label>6. Cause of accident</label>
+<textarea id="cause"></textarea>
 
-  <div class="checkrow">
-    <label><input type="checkbox" id="floor_dry"> Dry</label>
-    <label><input type="checkbox" id="floor_wet"> Wet</label>
-    <label><input type="checkbox" id="floor_clean"> Clean</label>
-    <label><input type="checkbox" id="floor_other"> Other</label>
-  </div>
+<label>7. Condition of floor</label>
+<textarea id="floor_condition"></textarea>
 
-  <div class="checkrow">
-    <label><input type="checkbox" id="witnessed_yes"> Was the accident witnessed? Yes</label>
-    <label><input type="checkbox" id="witnessed_no"> Was the accident witnessed? No</label>
-  </div>
+<label>8. Weather conditions</label>
+<textarea id="weather"></textarea>
 
-  <label>If yes, please furnish name(s) and address(es) of witnesses</label>
-  <textarea id="witness_names"></textarea>
 </div>
+
 
 <div class="section">
-  <h3>Who Was Present</h3>
 
-  <label>With injured party</label>
-  <textarea id="with_injured"></textarea>
+<h3>Witness Statements</h3>
 
-  <label>Our employees</label>
-  <textarea id="employees_present"></textarea>
+<label>Witness 1 Statement</label>
+<textarea id="w1"></textarea>
 
-  <label>Others (name / address / phone)</label>
-  <textarea id="others_present"></textarea>
+<label>Witness 1 Photo</label>
+<input type="file" id="w1p" accept="image/*">
 
-  <label>Weather conditions</label>
-  <textarea id="weather"></textarea>
+<label>Witness 2 Statement</label>
+<textarea id="w2"></textarea>
+
+<label>Witness 2 Photo</label>
+<input type="file" id="w2p" accept="image/*">
+
+<label>Witness 3 Statement</label>
+<textarea id="w3"></textarea>
+
+<label>Witness 3 Photo</label>
+<input type="file" id="w3p" accept="image/*">
+
 </div>
+
 
 <div class="section">
-  <h3>Injured Party</h3>
 
-  <label>Name / Address</label>
-  <textarea id="injured_name_address"></textarea>
+<h3>Scene Photos</h3>
 
-  <label>Approx Age</label>
-  <input id="injured_age">
+<label>Scene Photo 1</label>
+<input type="file" id="scene1" accept="image/*" capture="environment">
 
-  <div class="checkrow">
-    <label><input type="checkbox" id="injured_customer"> Customer</label>
-    <label><input type="checkbox" id="injured_employee"> Employee</label>
-    <label><input type="checkbox" id="injured_other"> Other</label>
-  </div>
+<label>Scene Photo 2</label>
+<input type="file" id="scene2" accept="image/*" capture="environment">
 
-  <label>(a) Type and condition of footwear</label>
-  <textarea id="footwear"></textarea>
+<label>Scene Photo 3</label>
+<input type="file" id="scene3" accept="image/*" capture="environment">
 
-  <label>(b) Was the injured party carrying anything at the time of accident? If so, details</label>
-  <textarea id="carrying"></textarea>
-
-  <label>(c) Describe the nature of any injuries you observed at the time</label>
-  <textarea id="injuries"></textarea>
 </div>
+
 
 <div class="section">
-  <h3>Treatment Given</h3>
 
-  <div class="checkrow">
-    <label><input type="checkbox" id="treatment_none"> None</label>
-    <label><input type="checkbox" id="treatment_firstaid"> First Aid</label>
-    <label><input type="checkbox" id="treatment_doctor"> Doctor</label>
-    <label><input type="checkbox" id="treatment_casualty"> Brought to Casualty</label>
-    <label><input type="checkbox" id="treatment_ambulance"> Ambulance</label>
-  </div>
+<h3>Additional Photos</h3>
 
-  <label>Please give details</label>
-  <textarea id="treatment_details"></textarea>
+<label>Additional Photo 1</label>
+<input type="file" id="add1" accept="image/*">
 
-  <div class="checkrow">
-    <label><input type="checkbox" id="absent_yes"> (d) If employee accident, was employee absent from work? Yes</label>
-    <label><input type="checkbox" id="absent_no"> No</label>
-  </div>
+<label>Additional Photo 2</label>
+<input type="file" id="add2" accept="image/*">
 
-  <label>If yes, for what period?</label>
-  <textarea id="absence_period"></textarea>
+<label>Additional Photo 3</label>
+<input type="file" id="add3" accept="image/*">
 
-  <label>(e) Paid in store expenses €</label>
-  <input id="expenses_amount">
-
-  <label>Details</label>
-  <textarea id="expenses_details"></textarea>
 </div>
+
 
 <div class="section">
-  <h3>Witness Statements</h3>
 
-  <label>Witness 1 Statement</label>
-  <textarea id="w1"></textarea>
-  <label>Witness 1 Photo</label>
-  <input type="file" id="w1p" accept="image/*">
+<h3>Manager Signature</h3>
 
-  <label>Witness 2 Statement</label>
-  <textarea id="w2"></textarea>
-  <label>Witness 2 Photo</label>
-  <input type="file" id="w2p" accept="image/*">
+<canvas id="signature-pad"></canvas>
 
-  <label>Witness 3 Statement</label>
-  <textarea id="w3"></textarea>
-  <label>Witness 3 Photo</label>
-  <input type="file" id="w3p" accept="image/*">
+<button class="small" onclick="clearSignature()">Clear Signature</button>
+
 </div>
 
-<div class="section">
-  <h3>Scene Photos</h3>
-
-  <label>Scene Photo 1</label>
-  <input type="file" id="scene1" accept="image/*" capture="environment">
-
-  <label>Scene Photo 2</label>
-  <input type="file" id="scene2" accept="image/*" capture="environment">
-
-  <label>Scene Photo 3</label>
-  <input type="file" id="scene3" accept="image/*" capture="environment">
-</div>
-
-<div class="section">
-  <h3>Additional Photos</h3>
-
-  <label>Additional Photo 1</label>
-  <input type="file" id="add1" accept="image/*">
-
-  <label>Additional Photo 2</label>
-  <input type="file" id="add2" accept="image/*">
-
-  <label>Additional Photo 3</label>
-  <input type="file" id="add3" accept="image/*">
-</div>
-
-<div class="section">
-  <h3>Video Evidence</h3>
-
-  <label>Video Clip 1</label>
-  <input type="file" id="v1" accept="video/*">
-
-  <label>Video Clip 2</label>
-  <input type="file" id="v2" accept="video/*">
-
-  <label>Video Clip 3</label>
-  <input type="file" id="v3" accept="video/*">
-</div>
-
-<div class="section">
-  <h3>Completion</h3>
-
-  <label>Completed by</label>
-  <input id="completed_by">
-
-  <label>Date</label>
-  <input type="date" id="completed_date">
-
-  <label>Store Manager</label>
-  <input id="store_manager_name">
-
-  <label>Store Manager Signature</label>
-  <canvas id="signature-pad"></canvas>
-
-  <button class="small" onclick="clearSignature()">Clear Signature</button>
-</div>
 
 <button onclick="generateReport()">Generate & Email Report</button>
 
+
 <script>
+
 let signaturePad;
 
-window.onload = function () {
-  const canvas = document.getElementById("signature-pad");
-  canvas.width = canvas.offsetWidth;
-  canvas.height = 200;
-  signaturePad = new SignaturePad(canvas);
-};
+window.onload=function(){
+
+const canvas=document.getElementById("signature-pad");
+
+canvas.width=canvas.offsetWidth;
+canvas.height=200;
+
+signaturePad=new SignaturePad(canvas);
+
+}
 
 function clearSignature(){
-  signaturePad.clear();
+signaturePad.clear();
 }
 
-function yesNoFromChecks(yesId, noId){
-  const yes = document.getElementById(yesId).checked;
-  const no = document.getElementById(noId).checked;
-  if(yes && !no) return "Yes";
-  if(no && !yes) return "No";
-  if(yes && no) return "Yes / No both ticked";
-  return "";
-}
 
-function tickList(idsAndLabels){
-  return idsAndLabels
-    .filter(item => document.getElementById(item.id).checked)
-    .map(item => item.label)
-    .join(", ");
-}
-
-function safeText(id){
-  const el = document.getElementById(id);
-  return el ? (el.value || "") : "";
-}
-
-function addWrappedText(pdf, text, x, y, width, lineHeight){
-  const lines = pdf.splitTextToSize(text || "", width);
-  pdf.text(lines, x, y);
-  return y + (lines.length * lineHeight);
-}
-
-function ensureSpace(pdf, y, needed){
-  if(y + needed > 270){
-    pdf.addPage();
-    return 20;
-  }
-  return y;
-}
+/* IMAGE COMPRESSION */
 
 function readImage(file){
-  return new Promise(resolve=>{
-    const reader = new FileReader();
-    reader.onload = function(e){
-      const img = new Image();
-      img.onload = function(){
-        const canvas = document.createElement("canvas");
-        const maxWidth = 1000;
-        const scale = Math.min(1, maxWidth / img.width);
-        canvas.width = Math.round(img.width * scale);
-        canvas.height = Math.round(img.height * scale);
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL("image/jpeg", 0.55));
-      };
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  });
+
+return new Promise(resolve=>{
+
+let reader=new FileReader();
+
+reader.onload=function(e){
+
+let img=new Image();
+
+img.onload=function(){
+
+let canvas=document.createElement("canvas");
+
+let maxWidth=1200;
+
+let scale=maxWidth/img.width;
+
+canvas.width=maxWidth;
+canvas.height=img.height*scale;
+
+let ctx=canvas.getContext("2d");
+
+ctx.drawImage(img,0,0,canvas.width,canvas.height);
+
+let compressed=canvas.toDataURL("image/jpeg",0.6);
+
+resolve(compressed);
+
+};
+
+img.src=e.target.result;
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
 }
 
-async function addPhotoPage(pdf, file, title){
-  if(!file) return;
-  const img = await readImage(file);
 
-  pdf.addPage();
-  pdf.setFont("helvetica","bold");
-  pdf.setFontSize(16);
-  pdf.text(title,20,20);
-  pdf.line(20,24,190,24);
-  pdf.addImage(img,'JPEG',15,30,180,130);
+/* FULL PAGE PORTRAIT PHOTO */
+
+async function addPhotoPage(pdf,file,title){
+
+if(!file) return;
+
+let img=await readImage(file);
+
+pdf.addPage();
+
+pdf.setFont("helvetica","bold");
+pdf.setFontSize(16);
+
+pdf.text(title,20,20);
+
+pdf.line(20,24,190,24);
+
+/* FULL PAGE IMAGE */
+
+pdf.addImage(img,'JPEG',10,30,190,250);
+
 }
 
-async function addWitnessSection(pdf, title, statementText, photoFile){
-  if(statementText && statementText.trim()){
-    pdf.addPage();
-    pdf.setFont("helvetica","bold");
-    pdf.setFontSize(16);
-    pdf.text(title,20,20);
-    pdf.line(20,24,190,24);
-    pdf.setFont("helvetica","normal");
-    pdf.setFontSize(12);
-    addWrappedText(pdf, statementText, 20, 40, 170, 7);
-  }
 
-  await addPhotoPage(pdf, photoFile, title.replace("Statement","Photo"));
+/* WITNESS SECTION */
+
+async function addWitnessSection(pdf,title,statement,file){
+
+if(statement){
+
+pdf.addPage();
+
+pdf.setFont("helvetica","bold");
+pdf.setFontSize(16);
+
+pdf.text(title,20,20);
+
+pdf.line(20,24,190,24);
+
+pdf.setFont("helvetica","normal");
+pdf.setFontSize(12);
+
+pdf.text(pdf.splitTextToSize(statement,170),20,40);
+
 }
+
+await addPhotoPage(pdf,file,title+" Photo");
+
+}
+
+
+/* GENERATE REPORT */
 
 async function generateReport(){
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF();
 
-  const store = safeText("store");
-  const manager = safeText("manager");
-  const phone = safeText("phone");
-  const date = safeText("date");
-  const time = safeText("time");
+const { jsPDF } = window.jspdf;
 
-  const accident_datetime = safeText("accident_datetime");
-  const reported_to_when = safeText("reported_to_when");
-  const reported_by = safeText("reported_by");
-  const location = safeText("location");
-  const description = safeText("description");
-  const cause = safeText("cause");
-  const floor_condition = safeText("floor_condition");
-  const weather = safeText("weather");
+let pdf=new jsPDF();
 
-  const witness_names = safeText("witness_names");
-  const w1 = safeText("w1");
-  const w2 = safeText("w2");
-  const w3 = safeText("w3");
 
-  const with_injured = safeText("with_injured");
-  const employees_present = safeText("employees_present");
-  const others_present = safeText("others_present");
+let store=document.getElementById("store").value;
+let manager=document.getElementById("manager").value;
+let phone=document.getElementById("phone").value;
+let date=document.getElementById("date").value;
+let time=document.getElementById("time").value;
 
-  const injured_name_address = safeText("injured_name_address");
-  const injured_age = safeText("injured_age");
-  const footwear = safeText("footwear");
-  const carrying = safeText("carrying");
-  const injuries = safeText("injuries");
+let accident_datetime=document.getElementById("accident_datetime").value;
+let reported_to_when=document.getElementById("reported_to_when").value;
+let reported_by=document.getElementById("reported_by").value;
+let location=document.getElementById("location").value;
+let description=document.getElementById("description").value;
+let cause=document.getElementById("cause").value;
+let floor_condition=document.getElementById("floor_condition").value;
+let weather=document.getElementById("weather").value;
 
-  const treatment_details = safeText("treatment_details");
-  const absence_period = safeText("absence_period");
-  const expenses_amount = safeText("expenses_amount");
-  const expenses_details = safeText("expenses_details");
 
-  const completed_by = safeText("completed_by");
-  const completed_date = safeText("completed_date");
-  const store_manager_name = safeText("store_manager_name");
+pdf.setFont("helvetica","bold");
+pdf.setFontSize(20);
 
-  const floorTicks = tickList([
-    {id:"floor_dry",label:"Dry"},
-    {id:"floor_wet",label:"Wet"},
-    {id:"floor_clean",label:"Clean"},
-    {id:"floor_other",label:"Other"}
-  ]);
+pdf.text("MORIARTY GROUP (SUPERVALU)",20,20);
 
-  const injuredType = tickList([
-    {id:"injured_customer",label:"Customer"},
-    {id:"injured_employee",label:"Employee"},
-    {id:"injured_other",label:"Other"}
-  ]);
+pdf.setFontSize(16);
 
-  const treatmentTicks = tickList([
-    {id:"treatment_none",label:"None"},
-    {id:"treatment_firstaid",label:"First Aid"},
-    {id:"treatment_doctor",label:"Doctor"},
-    {id:"treatment_casualty",label:"Brought to Casualty"},
-    {id:"treatment_ambulance",label:"Ambulance"}
-  ]);
+pdf.text("ACCIDENT / INCIDENT REPORT FORM",20,30);
 
-  const witnessed = yesNoFromChecks("witnessed_yes","witnessed_no");
-  const absent = yesNoFromChecks("absent_yes","absent_no");
+pdf.line(20,35,190,35);
 
-  pdf.setFont("helvetica","bold");
-  pdf.setFontSize(18);
-  pdf.text("MORIARTY GROUP (SUPERVALU)",20,18);
-  pdf.setFontSize(15);
-  pdf.text("ACCIDENT / INCIDENT REPORT FORM",20,28);
-  pdf.line(20,32,190,32);
 
-  pdf.setFont("helvetica","normal");
-  pdf.setFontSize(11);
+pdf.setFontSize(12);
+pdf.setFont("helvetica","normal");
 
-  let y = 42;
+let y=50;
 
-  pdf.setFont("helvetica","bold");
-  pdf.text("STORE DETAILS",20,y);
-  pdf.line(20,y+2,190,y+2);
-  y += 10;
+pdf.text(`Store: ${store}`,20,y); y+=8;
+pdf.text(`Manager: ${manager}`,20,y); y+=8;
+pdf.text(`Phone: ${phone}`,20,y); y+=8;
+pdf.text(`Date: ${date}`,20,y); y+=8;
+pdf.text(`Time: ${time}`,20,y); y+=12;
 
-  pdf.setFont("helvetica","normal");
-  pdf.text(`Store: ${store}`,20,y); y += 8;
-  pdf.text(`Manager: ${manager}`,20,y); y += 8;
-  pdf.text(`Phone No: ${phone}`,20,y); y += 8;
-  pdf.text(`Date: ${date}`,20,y); y += 8;
-  pdf.text(`Exact Time: ${time}`,20,y); y += 12;
 
-  y = ensureSpace(pdf,y,110);
-  pdf.setFont("helvetica","bold");
-  pdf.text("PARTICULARS OF ACCIDENT",20,y);
-  pdf.line(20,y+2,190,y+2);
-  y += 10;
+pdf.setFont("helvetica","bold");
+pdf.text("PARTICULARS OF ACCIDENT",20,y);
+pdf.line(20,y+2,190,y+2);
 
-  pdf.setFont("helvetica","normal");
+y+=10;
 
-  pdf.text("1. State day, date and time of accident",20,y); y += 7;
-  y = addWrappedText(pdf, accident_datetime, 20, y, 170, 6) + 6;
+pdf.setFont("helvetica","normal");
 
-  pdf.text("2. To whom and when was it reported",20,y); y += 7;
-  y = addWrappedText(pdf, reported_to_when, 20, y, 170, 6) + 6;
+pdf.text("1. State day, date and time of accident",20,y); y+=7;
+pdf.text(pdf.splitTextToSize(accident_datetime,170),20,y); y+=10;
 
-  pdf.text("3. Who reported the accident",20,y); y += 7;
-  y = addWrappedText(pdf, reported_by, 20, y, 170, 6) + 6;
+pdf.text("2. To whom and when was it reported",20,y); y+=7;
+pdf.text(pdf.splitTextToSize(reported_to_when,170),20,y); y+=10;
 
-  pdf.text("4. Where precisely did it happen",20,y); y += 7;
-  y = addWrappedText(pdf, location, 20, y, 170, 6) + 6;
+pdf.text("3. Who reported the accident",20,y); y+=7;
+pdf.text(pdf.splitTextToSize(reported_by,170),20,y); y+=10;
 
-  pdf.text("5. State fully what happened",20,y); y += 7;
-  y = addWrappedText(pdf, description, 20, y, 170, 6) + 6;
+pdf.text("4. Where precisely did it happen",20,y); y+=7;
+pdf.text(pdf.splitTextToSize(location,170),20,y); y+=10;
 
-  y = ensureSpace(pdf,y,60);
-  pdf.text("6. Cause of accident",20,y); y += 7;
-  y = addWrappedText(pdf, cause, 20, y, 170, 6) + 6;
+pdf.text("5. State fully what happened",20,y); y+=7;
+pdf.text(pdf.splitTextToSize(description,170),20,y); y+=10;
 
-  pdf.text("7. Condition of floor",20,y); y += 7;
-  y = addWrappedText(pdf, floor_condition, 20, y, 170, 6) + 4;
-  if(floorTicks){
-    pdf.text(`Ticked: ${floorTicks}`,20,y);
-    y += 10;
-  }
+pdf.text("6. Cause of accident",20,y); y+=7;
+pdf.text(pdf.splitTextToSize(cause,170),20,y); y+=10;
 
-  pdf.text("8. Weather conditions",20,y); y += 7;
-  y = addWrappedText(pdf, weather, 20, y, 170, 6) + 8;
+pdf.text("7. Condition of floor",20,y); y+=7;
+pdf.text(pdf.splitTextToSize(floor_condition,170),20,y); y+=10;
 
-  y = ensureSpace(pdf,y,70);
-  pdf.setFont("helvetica","bold");
-  pdf.text("WITNESSES",20,y);
-  pdf.line(20,y+2,190,y+2);
-  y += 10;
-  pdf.setFont("helvetica","normal");
+pdf.text("8. Weather conditions",20,y); y+=7;
+pdf.text(pdf.splitTextToSize(weather,170),20,y);
 
-  pdf.text(`Was the accident witnessed: ${witnessed}`,20,y); y += 8;
-  pdf.text("Witness names / addresses",20,y); y += 7;
-  y = addWrappedText(pdf, witness_names, 20, y, 170, 6) + 8;
 
-  y = ensureSpace(pdf,y,65);
-  pdf.setFont("helvetica","bold");
-  pdf.text("WHO WAS PRESENT",20,y);
-  pdf.line(20,y+2,190,y+2);
-  y += 10;
-  pdf.setFont("helvetica","normal");
+if(!signaturePad.isEmpty()){
 
-  pdf.text("With injured party",20,y); y += 7;
-  y = addWrappedText(pdf, with_injured, 20, y, 170, 6) + 6;
+let sig=signaturePad.toDataURL();
 
-  pdf.text("Our employees",20,y); y += 7;
-  y = addWrappedText(pdf, employees_present, 20, y, 170, 6) + 6;
+pdf.addPage();
 
-  pdf.text("Others",20,y); y += 7;
-  y = addWrappedText(pdf, others_present, 20, y, 170, 6) + 8;
+pdf.text("Manager Signature",20,20);
 
-  y = ensureSpace(pdf,y,95);
-  pdf.setFont("helvetica","bold");
-  pdf.text("INJURED PARTY",20,y);
-  pdf.line(20,y+2,190,y+2);
-  y += 10;
-  pdf.setFont("helvetica","normal");
+pdf.addImage(sig,'PNG',20,30,60,30);
 
-  pdf.text("Name / Address",20,y); y += 7;
-  y = addWrappedText(pdf, injured_name_address, 20, y, 170, 6) + 6;
-
-  pdf.text(`Approx Age: ${injured_age}`,20,y); y += 8;
-  pdf.text(`Customer / Employee / Other: ${injuredType}`,20,y); y += 8;
-
-  pdf.text("(a) Type and condition of footwear",20,y); y += 7;
-  y = addWrappedText(pdf, footwear, 20, y, 170, 6) + 6;
-
-  pdf.text("(b) Was the injured party carrying anything? If so, details",20,y); y += 7;
-  y = addWrappedText(pdf, carrying, 20, y, 170, 6) + 6;
-
-  pdf.text("(c) Nature of injuries observed",20,y); y += 7;
-  y = addWrappedText(pdf, injuries, 20, y, 170, 6) + 8;
-
-  y = ensureSpace(pdf,y,75);
-  pdf.setFont("helvetica","bold");
-  pdf.text("TREATMENT GIVEN",20,y);
-  pdf.line(20,y+2,190,y+2);
-  y += 10;
-  pdf.setFont("helvetica","normal");
-
-  pdf.text(`Treatment selected: ${treatmentTicks}`,20,y); y += 8;
-  pdf.text("Please give details",20,y); y += 7;
-  y = addWrappedText(pdf, treatment_details, 20, y, 170, 6) + 8;
-
-  y = ensureSpace(pdf,y,60);
-  pdf.setFont("helvetica","bold");
-  pdf.text("EMPLOYEE ACCIDENT",20,y);
-  pdf.line(20,y+2,190,y+2);
-  y += 10;
-  pdf.setFont("helvetica","normal");
-
-  pdf.text(`Was employee absent from work: ${absent}`,20,y); y += 8;
-  pdf.text("If yes, for what period?",20,y); y += 7;
-  y = addWrappedText(pdf, absence_period, 20, y, 170, 6) + 8;
-
-  y = ensureSpace(pdf,y,60);
-  pdf.setFont("helvetica","bold");
-  pdf.text("PAID IN STORE EXPENSES",20,y);
-  pdf.line(20,y+2,190,y+2);
-  y += 10;
-  pdf.setFont("helvetica","normal");
-
-  pdf.text(`Amount (€): ${expenses_amount}`,20,y); y += 8;
-  pdf.text("Details",20,y); y += 7;
-  y = addWrappedText(pdf, expenses_details, 20, y, 170, 6) + 8;
-
-  y = ensureSpace(pdf,y,70);
-  pdf.setFont("helvetica","bold");
-  pdf.text("COMPLETION",20,y);
-  pdf.line(20,y+2,190,y+2);
-  y += 10;
-  pdf.setFont("helvetica","normal");
-
-  pdf.text(`Completed by: ${completed_by}`,20,y); y += 8;
-  pdf.text(`Date: ${completed_date}`,20,y); y += 8;
-  pdf.text(`Store Manager: ${store_manager_name}`,20,y); y += 12;
-
-  if(!signaturePad.isEmpty()){
-    const sig = signaturePad.toDataURL();
-    pdf.setFont("helvetica","bold");
-    pdf.text("Store Manager Signature",20,y);
-    pdf.addImage(sig,'PNG',20,y+5,60,30);
-  }
-
-  await addWitnessSection(pdf, "Witness 1 Statement", w1, document.getElementById("w1p").files[0]);
-  await addWitnessSection(pdf, "Witness 2 Statement", w2, document.getElementById("w2p").files[0]);
-  await addWitnessSection(pdf, "Witness 3 Statement", w3, document.getElementById("w3p").files[0]);
-
-  await addPhotoPage(pdf, document.getElementById("scene1").files[0], "Scene Photo 1");
-  await addPhotoPage(pdf, document.getElementById("scene2").files[0], "Scene Photo 2");
-  await addPhotoPage(pdf, document.getElementById("scene3").files[0], "Scene Photo 3");
-
-  await addPhotoPage(pdf, document.getElementById("add1").files[0], "Additional Photo 1");
-  await addPhotoPage(pdf, document.getElementById("add2").files[0], "Additional Photo 2");
-  await addPhotoPage(pdf, document.getElementById("add3").files[0], "Additional Photo 3");
-
-  const v1 = document.getElementById("v1").files[0];
-  const v2 = document.getElementById("v2").files[0];
-  const v3 = document.getElementById("v3").files[0];
-
-  if(v1 || v2 || v3){
-    pdf.addPage();
-    pdf.setFont("helvetica","bold");
-    pdf.setFontSize(16);
-    pdf.text("VIDEO EVIDENCE RECORDED",20,20);
-    pdf.line(20,24,190,24);
-
-    pdf.setFont("helvetica","normal");
-    pdf.setFontSize(12);
-    let vy = 40;
-
-    if(v1){ pdf.text("Video 1: " + v1.name,20,vy); vy += 10; }
-    if(v2){ pdf.text("Video 2: " + v2.name,20,vy); vy += 10; }
-    if(v3){ pdf.text("Video 3: " + v3.name,20,vy); vy += 10; }
-  }
-
-  const blob = pdf.output("blob");
-  const filename = `SV_${store || "Report"}_${date || "NoDate"}.pdf`;
-  const file = new File([blob], filename, {type:"application/pdf"});
-
-  if(navigator.share){
-    navigator.share({
-      title:"SuperValu Incident Report",
-      files:[file]
-    });
-  }else{
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = filename;
-    link.click();
-  }
 }
+
+
+/* WITNESSES */
+
+await addWitnessSection(pdf,"Witness 1 Statement",document.getElementById("w1").value,document.getElementById("w1p").files[0]);
+
+await addWitnessSection(pdf,"Witness 2 Statement",document.getElementById("w2").value,document.getElementById("w2p").files[0]);
+
+await addWitnessSection(pdf,"Witness 3 Statement",document.getElementById("w3").value,document.getElementById("w3p").files[0]);
+
+
+/* SCENE PHOTOS */
+
+await addPhotoPage(pdf,document.getElementById("scene1").files[0],"Scene Photo 1");
+
+await addPhotoPage(pdf,document.getElementById("scene2").files[0],"Scene Photo 2");
+
+await addPhotoPage(pdf,document.getElementById("scene3").files[0],"Scene Photo 3");
+
+
+/* ADDITIONAL PHOTOS */
+
+await addPhotoPage(pdf,document.getElementById("add1").files[0],"Additional Photo 1");
+
+await addPhotoPage(pdf,document.getElementById("add2").files[0],"Additional Photo 2");
+
+await addPhotoPage(pdf,document.getElementById("add3").files[0],"Additional Photo 3");
+
+
+let blob=pdf.output("blob");
+
+let file=new File([blob],"Incident_Report.pdf",{type:"application/pdf"});
+
+
+if(navigator.share){
+
+navigator.share({
+title:"SuperValu Incident Report",
+files:[file]
+});
+
+}else{
+
+let link=document.createElement("a");
+
+link.href=URL.createObjectURL(blob);
+
+link.download="Incident_Report.pdf";
+
+link.click();
+
+}
+
+}
+
 </script>
 
 </body>

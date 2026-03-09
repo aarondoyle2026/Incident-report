@@ -6,10 +6,10 @@
 
 <style>
 body{font-family:Arial,sans-serif;margin:20px;background:#f5f5f5;color:#111;}
-h2{text-align:center;margin-bottom:18px;}
+h2{text-align:center;margin-bottom:18px;line-height:1.15;}
 h3{margin:0 0 10px 0;}
 label{font-weight:bold;display:block;margin-top:10px;}
-input,textarea,select{
+input,textarea{
   width:100%;
   padding:10px;
   margin-top:5px;
@@ -17,7 +17,7 @@ input,textarea,select{
   font-size:16px;
   box-sizing:border-box;
 }
-textarea{min-height:80px;}
+textarea{min-height:70px;}
 .section{
   background:#fff;
   padding:15px;
@@ -36,14 +36,13 @@ button{
   margin-top:10px;
 }
 .small{background:#666;}
-.inline3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
 .inline2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .checkrow{display:flex;gap:15px;flex-wrap:wrap;margin:8px 0 14px 0;}
 .checkrow label{font-weight:normal;display:flex;align-items:center;gap:6px;margin:0;}
 .checkrow input{width:auto;margin:0;}
 #signature-pad{border:2px solid #ccc;background:#fff;width:100%;height:200px;touch-action:none;}
 @media (max-width:700px){
-  .inline3,.inline2{grid-template-columns:1fr;}
+  .inline2{grid-template-columns:1fr;}
 }
 </style>
 
@@ -73,7 +72,7 @@ button{
       <input type="date" id="date">
     </div>
     <div>
-      <label>Time</label>
+      <label>Exact Time</label>
       <input type="time" id="time">
     </div>
   </div>
@@ -82,7 +81,7 @@ button{
 <div class="section">
   <h3>Particulars of Accident</h3>
 
-  <label>1. State day / date / time of accident</label>
+  <label>1. State day, date and time of accident</label>
   <textarea id="accident_datetime"></textarea>
 
   <label>2. To whom and when was it reported</label>
@@ -91,7 +90,7 @@ button{
   <label>3. Who reported the accident</label>
   <textarea id="reported_by"></textarea>
 
-  <label>4. Where precisely did it happen</label>
+  <label>4. Where precisely did it happen? e.g. by reference to aisle / fixture / product</label>
   <textarea id="location"></textarea>
 
   <label>5. State fully what happened</label>
@@ -106,23 +105,91 @@ button{
   <div class="checkrow">
     <label><input type="checkbox" id="floor_dry"> Dry</label>
     <label><input type="checkbox" id="floor_wet"> Wet</label>
+    <label><input type="checkbox" id="floor_clean"> Clean</label>
     <label><input type="checkbox" id="floor_other"> Other</label>
   </div>
 
-  <label>8. Weather conditions</label>
+  <div class="checkrow">
+    <label><input type="checkbox" id="witnessed_yes"> Was the accident witnessed? Yes</label>
+    <label><input type="checkbox" id="witnessed_no"> Was the accident witnessed? No</label>
+  </div>
+
+  <label>If yes, please furnish name(s) and address(es) of witnesses</label>
+  <textarea id="witness_names"></textarea>
+</div>
+
+<div class="section">
+  <h3>Who Was Present</h3>
+
+  <label>With injured party</label>
+  <textarea id="with_injured"></textarea>
+
+  <label>Our employees</label>
+  <textarea id="employees_present"></textarea>
+
+  <label>Others (name / address / phone)</label>
+  <textarea id="others_present"></textarea>
+
+  <label>Weather conditions</label>
   <textarea id="weather"></textarea>
 </div>
 
 <div class="section">
-  <h3>Witnesses</h3>
+  <h3>Injured Party</h3>
+
+  <label>Name / Address</label>
+  <textarea id="injured_name_address"></textarea>
+
+  <label>Approx Age</label>
+  <input id="injured_age">
 
   <div class="checkrow">
-    <label><input type="checkbox" id="witnessed_yes"> Accident witnessed - Yes</label>
-    <label><input type="checkbox" id="witnessed_no"> Accident witnessed - No</label>
+    <label><input type="checkbox" id="injured_customer"> Customer</label>
+    <label><input type="checkbox" id="injured_employee"> Employee</label>
+    <label><input type="checkbox" id="injured_other"> Other</label>
   </div>
 
-  <label>Witness Names</label>
-  <textarea id="witness_names"></textarea>
+  <label>(a) Type and condition of footwear</label>
+  <textarea id="footwear"></textarea>
+
+  <label>(b) Was the injured party carrying anything at the time of accident? If so, details</label>
+  <textarea id="carrying"></textarea>
+
+  <label>(c) Describe the nature of any injuries you observed at the time</label>
+  <textarea id="injuries"></textarea>
+</div>
+
+<div class="section">
+  <h3>Treatment Given</h3>
+
+  <div class="checkrow">
+    <label><input type="checkbox" id="treatment_none"> None</label>
+    <label><input type="checkbox" id="treatment_firstaid"> First Aid</label>
+    <label><input type="checkbox" id="treatment_doctor"> Doctor</label>
+    <label><input type="checkbox" id="treatment_casualty"> Brought to Casualty</label>
+    <label><input type="checkbox" id="treatment_ambulance"> Ambulance</label>
+  </div>
+
+  <label>Please give details</label>
+  <textarea id="treatment_details"></textarea>
+
+  <div class="checkrow">
+    <label><input type="checkbox" id="absent_yes"> (d) If employee accident, was employee absent from work? Yes</label>
+    <label><input type="checkbox" id="absent_no"> No</label>
+  </div>
+
+  <label>If yes, for what period?</label>
+  <textarea id="absence_period"></textarea>
+
+  <label>(e) Paid in store expenses €</label>
+  <input id="expenses_amount">
+
+  <label>Details</label>
+  <textarea id="expenses_details"></textarea>
+</div>
+
+<div class="section">
+  <h3>Witness Statements</h3>
 
   <label>Witness 1 Statement</label>
   <textarea id="w1"></textarea>
@@ -141,82 +208,7 @@ button{
 </div>
 
 <div class="section">
-  <h3>Who Was Present</h3>
-
-  <label>With Injured Party</label>
-  <textarea id="with_injured"></textarea>
-
-  <label>Our Employees</label>
-  <textarea id="employees_present"></textarea>
-
-  <label>Others</label>
-  <textarea id="others_present"></textarea>
-</div>
-
-<div class="section">
-  <h3>Injured Party</h3>
-
-  <label>Name / Address</label>
-  <textarea id="injured_name_address"></textarea>
-
-  <label>Approx Age</label>
-  <input id="injured_age">
-
-  <div class="checkrow">
-    <label><input type="checkbox" id="injured_customer"> Customer</label>
-    <label><input type="checkbox" id="injured_employee"> Employee</label>
-    <label><input type="checkbox" id="injured_other"> Other</label>
-  </div>
-
-  <label>Footwear</label>
-  <textarea id="footwear"></textarea>
-
-  <label>Was the injured party carrying anything</label>
-  <textarea id="carrying"></textarea>
-
-  <label>Nature of injuries observed</label>
-  <textarea id="injuries"></textarea>
-</div>
-
-<div class="section">
-  <h3>Treatment Given</h3>
-
-  <div class="checkrow">
-    <label><input type="checkbox" id="treatment_none"> None</label>
-    <label><input type="checkbox" id="treatment_firstaid"> First Aid</label>
-    <label><input type="checkbox" id="treatment_doctor"> Doctor</label>
-    <label><input type="checkbox" id="treatment_casualty"> Brought to casualty</label>
-    <label><input type="checkbox" id="treatment_ambulance"> Ambulance</label>
-  </div>
-
-  <label>Treatment Details</label>
-  <textarea id="treatment_details"></textarea>
-</div>
-
-<div class="section">
-  <h3>Employee Accident</h3>
-
-  <div class="checkrow">
-    <label><input type="checkbox" id="absent_yes"> Was employee absent from work - Yes</label>
-    <label><input type="checkbox" id="absent_no"> Was employee absent from work - No</label>
-  </div>
-
-  <label>If yes, state period</label>
-  <textarea id="absence_period"></textarea>
-</div>
-
-<div class="section">
-  <h3>Paid In Store Expenses</h3>
-
-  <label>Amount (€)</label>
-  <input id="expenses_amount">
-
-  <label>Details</label>
-  <textarea id="expenses_details"></textarea>
-</div>
-
-<div class="section">
-  <h3>Evidence Photos</h3>
+  <h3>Scene Photos</h3>
 
   <label>Scene Photo 1</label>
   <input type="file" id="scene1" accept="image/*" capture="environment">
@@ -226,6 +218,10 @@ button{
 
   <label>Scene Photo 3</label>
   <input type="file" id="scene3" accept="image/*" capture="environment">
+</div>
+
+<div class="section">
+  <h3>Additional Photos</h3>
 
   <label>Additional Photo 1</label>
   <input type="file" id="add1" accept="image/*">
@@ -253,10 +249,10 @@ button{
 <div class="section">
   <h3>Completion</h3>
 
-  <label>Completed By</label>
+  <label>Completed by</label>
   <input id="completed_by">
 
-  <label>Completion Date</label>
+  <label>Date</label>
   <input type="date" id="completed_date">
 
   <label>Store Manager</label>
@@ -349,7 +345,6 @@ async function addPhotoPage(pdf, file, title){
   pdf.setFontSize(16);
   pdf.text(title,20,20);
   pdf.line(20,24,190,24);
-
   pdf.addImage(img,'JPEG',15,30,180,130);
 }
 
@@ -360,7 +355,6 @@ async function addWitnessSection(pdf, title, statementText, photoFile){
     pdf.setFontSize(16);
     pdf.text(title,20,20);
     pdf.line(20,24,190,24);
-
     pdf.setFont("helvetica","normal");
     pdf.setFontSize(12);
     addWrappedText(pdf, statementText, 20, 40, 170, 7);
@@ -415,6 +409,7 @@ async function generateReport(){
   const floorTicks = tickList([
     {id:"floor_dry",label:"Dry"},
     {id:"floor_wet",label:"Wet"},
+    {id:"floor_clean",label:"Clean"},
     {id:"floor_other",label:"Other"}
   ]);
 
@@ -428,7 +423,7 @@ async function generateReport(){
     {id:"treatment_none",label:"None"},
     {id:"treatment_firstaid",label:"First Aid"},
     {id:"treatment_doctor",label:"Doctor"},
-    {id:"treatment_casualty",label:"Brought to casualty"},
+    {id:"treatment_casualty",label:"Brought to Casualty"},
     {id:"treatment_ambulance",label:"Ambulance"}
   ]);
 
@@ -457,9 +452,9 @@ async function generateReport(){
   pdf.text(`Manager: ${manager}`,20,y); y += 8;
   pdf.text(`Phone No: ${phone}`,20,y); y += 8;
   pdf.text(`Date: ${date}`,20,y); y += 8;
-  pdf.text(`Time: ${time}`,20,y); y += 12;
+  pdf.text(`Exact Time: ${time}`,20,y); y += 12;
 
-  y = ensureSpace(pdf,y,90);
+  y = ensureSpace(pdf,y,110);
   pdf.setFont("helvetica","bold");
   pdf.text("PARTICULARS OF ACCIDENT",20,y);
   pdf.line(20,y+2,190,y+2);
@@ -467,7 +462,7 @@ async function generateReport(){
 
   pdf.setFont("helvetica","normal");
 
-  pdf.text("1. State day / date / time of accident",20,y); y += 7;
+  pdf.text("1. State day, date and time of accident",20,y); y += 7;
   y = addWrappedText(pdf, accident_datetime, 20, y, 170, 6) + 6;
 
   pdf.text("2. To whom and when was it reported",20,y); y += 7;
@@ -482,7 +477,7 @@ async function generateReport(){
   pdf.text("5. State fully what happened",20,y); y += 7;
   y = addWrappedText(pdf, description, 20, y, 170, 6) + 6;
 
-  y = ensureSpace(pdf,y,55);
+  y = ensureSpace(pdf,y,60);
   pdf.text("6. Cause of accident",20,y); y += 7;
   y = addWrappedText(pdf, cause, 20, y, 170, 6) + 6;
 
@@ -503,11 +498,11 @@ async function generateReport(){
   y += 10;
   pdf.setFont("helvetica","normal");
 
-  pdf.text(`Accident witnessed: ${witnessed}`,20,y); y += 8;
-  pdf.text("Witness names",20,y); y += 7;
+  pdf.text(`Was the accident witnessed: ${witnessed}`,20,y); y += 8;
+  pdf.text("Witness names / addresses",20,y); y += 7;
   y = addWrappedText(pdf, witness_names, 20, y, 170, 6) + 8;
 
-  y = ensureSpace(pdf,y,60);
+  y = ensureSpace(pdf,y,65);
   pdf.setFont("helvetica","bold");
   pdf.text("WHO WAS PRESENT",20,y);
   pdf.line(20,y+2,190,y+2);
@@ -523,7 +518,7 @@ async function generateReport(){
   pdf.text("Others",20,y); y += 7;
   y = addWrappedText(pdf, others_present, 20, y, 170, 6) + 8;
 
-  y = ensureSpace(pdf,y,85);
+  y = ensureSpace(pdf,y,95);
   pdf.setFont("helvetica","bold");
   pdf.text("INJURED PARTY",20,y);
   pdf.line(20,y+2,190,y+2);
@@ -536,16 +531,16 @@ async function generateReport(){
   pdf.text(`Approx Age: ${injured_age}`,20,y); y += 8;
   pdf.text(`Customer / Employee / Other: ${injuredType}`,20,y); y += 8;
 
-  pdf.text("Footwear",20,y); y += 7;
+  pdf.text("(a) Type and condition of footwear",20,y); y += 7;
   y = addWrappedText(pdf, footwear, 20, y, 170, 6) + 6;
 
-  pdf.text("Was the injured party carrying anything",20,y); y += 7;
+  pdf.text("(b) Was the injured party carrying anything? If so, details",20,y); y += 7;
   y = addWrappedText(pdf, carrying, 20, y, 170, 6) + 6;
 
-  pdf.text("Nature of injuries observed",20,y); y += 7;
+  pdf.text("(c) Nature of injuries observed",20,y); y += 7;
   y = addWrappedText(pdf, injuries, 20, y, 170, 6) + 8;
 
-  y = ensureSpace(pdf,y,70);
+  y = ensureSpace(pdf,y,75);
   pdf.setFont("helvetica","bold");
   pdf.text("TREATMENT GIVEN",20,y);
   pdf.line(20,y+2,190,y+2);
@@ -553,10 +548,10 @@ async function generateReport(){
   pdf.setFont("helvetica","normal");
 
   pdf.text(`Treatment selected: ${treatmentTicks}`,20,y); y += 8;
-  pdf.text("Treatment details",20,y); y += 7;
+  pdf.text("Please give details",20,y); y += 7;
   y = addWrappedText(pdf, treatment_details, 20, y, 170, 6) + 8;
 
-  y = ensureSpace(pdf,y,55);
+  y = ensureSpace(pdf,y,60);
   pdf.setFont("helvetica","bold");
   pdf.text("EMPLOYEE ACCIDENT",20,y);
   pdf.line(20,y+2,190,y+2);
@@ -564,10 +559,10 @@ async function generateReport(){
   pdf.setFont("helvetica","normal");
 
   pdf.text(`Was employee absent from work: ${absent}`,20,y); y += 8;
-  pdf.text("If yes, state period",20,y); y += 7;
+  pdf.text("If yes, for what period?",20,y); y += 7;
   y = addWrappedText(pdf, absence_period, 20, y, 170, 6) + 8;
 
-  y = ensureSpace(pdf,y,55);
+  y = ensureSpace(pdf,y,60);
   pdf.setFont("helvetica","bold");
   pdf.text("PAID IN STORE EXPENSES",20,y);
   pdf.line(20,y+2,190,y+2);

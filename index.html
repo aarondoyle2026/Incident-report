@@ -3,7 +3,7 @@
 <head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Moriarty Group Accident Report</title>
+<title>SuperValu Accident / Incident Report</title>
 
 <style>
 
@@ -51,15 +51,15 @@ border-radius:5px;
 margin-top:10px;
 }
 
+.small{
+background:#666;
+}
+
 #signature-pad{
 border:2px solid #ccc;
 background:white;
 width:100%;
 height:200px;
-}
-
-.small{
-background:#666;
 }
 
 </style>
@@ -92,6 +92,7 @@ background:#666;
 
 </div>
 
+
 <div class="section">
 
 <h3>Particulars of Accident</h3>
@@ -122,6 +123,7 @@ background:#666;
 
 </div>
 
+
 <div class="section">
 
 <h3>Witness</h3>
@@ -129,10 +131,11 @@ background:#666;
 <label>Was the accident witnessed</label>
 <input id="witnessed">
 
-<label>Witness names and addresses</label>
+<label>Witness names / addresses</label>
 <textarea id="witnessNames"></textarea>
 
 </div>
+
 
 <div class="section">
 
@@ -148,6 +151,7 @@ background:#666;
 <textarea id="present3"></textarea>
 
 </div>
+
 
 <div class="section">
 
@@ -165,28 +169,30 @@ background:#666;
 <label>Footwear</label>
 <textarea id="injured4"></textarea>
 
-<label>Carrying anything</label>
+<label>Was injured party carrying anything</label>
 <textarea id="injured5"></textarea>
 
-<label>Nature of injuries</label>
+<label>Nature of injuries observed</label>
 <textarea id="injured6"></textarea>
 
 </div>
 
+
 <div class="section">
 
-<h3>Treatment</h3>
+<h3>Treatment Given</h3>
 
-<label>Treatment given</label>
+<label>Treatment</label>
 <textarea id="treatment"></textarea>
 
-<label>Employee absence</label>
+<label>Employee absent from work</label>
 <textarea id="absence"></textarea>
 
-<label>Paid store expenses</label>
+<label>Paid in store expenses</label>
 <textarea id="expenses"></textarea>
 
 </div>
+
 
 <div class="section">
 
@@ -198,6 +204,7 @@ background:#666;
 
 </div>
 
+
 <div class="section">
 
 <h3>Scene Photos</h3>
@@ -208,9 +215,10 @@ background:#666;
 
 </div>
 
+
 <div class="section">
 
-<h3>Signature</h3>
+<h3>Manager Signature</h3>
 
 <canvas id="signature-pad"></canvas>
 
@@ -218,7 +226,9 @@ background:#666;
 
 </div>
 
-<button onclick="generateReport()">Generate Report</button>
+
+<button onclick="generateReport()">Generate & Share Report</button>
+
 
 <script>
 
@@ -227,7 +237,6 @@ let signaturePad;
 window.onload=function(){
 
 const canvas=document.getElementById("signature-pad");
-
 canvas.width=canvas.offsetWidth;
 canvas.height=200;
 
@@ -238,6 +247,9 @@ signaturePad=new SignaturePad(canvas);
 function clearSignature(){
 signaturePad.clear();
 }
+
+
+/* IMAGE COMPRESSION */
 
 function compressImage(file){
 
@@ -258,7 +270,6 @@ const maxWidth=1200;
 const scale=maxWidth/img.width;
 
 canvas.width=maxWidth;
-
 canvas.height=img.height*scale;
 
 const ctx=canvas.getContext("2d");
@@ -279,6 +290,9 @@ reader.readAsDataURL(file);
 
 }
 
+
+/* PHOTO PAGE */
+
 async function addPhoto(pdf,file,title){
 
 if(!file) return;
@@ -287,7 +301,9 @@ const img=await compressImage(file);
 
 pdf.addPage();
 
+pdf.setFont("helvetica","bold");
 pdf.setFontSize(12);
+
 pdf.text(title,20,20);
 
 pdf.line(20,22,190,22);
@@ -295,6 +311,9 @@ pdf.line(20,22,190,22);
 pdf.addImage(img,'JPEG',10,30,190,250);
 
 }
+
+
+/* GENERATE REPORT */
 
 async function generateReport(){
 
@@ -305,39 +324,37 @@ const pdf=new jsPDF();
 pdf.setFont("helvetica","bold");
 pdf.setFontSize(14);
 
-pdf.text("MORIARTY GROUP (SUPERVALU)",20,18);
-pdf.text("ACCIDENT / INCIDENT REPORT FORM",20,26);
+pdf.text("MORIARTY GROUP (SUPERVALU)",20,20);
+pdf.text("ACCIDENT / INCIDENT REPORT FORM",20,28);
 
-pdf.line(20,30,190,30);
+pdf.line(20,32,190,32);
 
 pdf.setFont("helvetica","normal");
-pdf.setFontSize(9);
+pdf.setFontSize(10);
 
-let y=40;
+let y=42;
 
 function line(label,value){
 
 pdf.text(label,20,y);
+y+=5;
+pdf.text(pdf.splitTextToSize(value,170),20,y);
+y+=8;
+
+}
+
+line("Store",store.value);
+line("Manager",manager.value);
+line("Phone",phone.value);
+line("Date",date.value);
+line("Time",time.value);
+
+pdf.setFont("helvetica","bold");
+pdf.text("PARTICULARS OF ACCIDENT",20,y);
 pdf.line(20,y+2,190,y+2);
+y+=8;
 
-y+=6;
-
-if(value){
-
-const text=pdf.splitTextToSize(value,170);
-
-pdf.text(text,20,y);
-
-y+=text.length*5;
-
-}
-
-y+=4;
-
-}
-
-line("Store: "+store.value+"   Manager: "+manager.value+"   Phone: "+phone.value);
-line("Date: "+date.value+"   Time: "+time.value);
+pdf.setFont("helvetica","normal");
 
 line("1. State day, date and time of accident",q1.value);
 line("2. To whom and when was it reported",q2.value);
@@ -348,23 +365,24 @@ line("6. Cause of accident",q6.value);
 line("7. Condition of floor",q7.value);
 line("8. Weather conditions",q8.value);
 
-line("Was accident witnessed",witnessed.value);
+line("Witnessed",witnessed.value);
 line("Witness names",witnessNames.value);
 
 line("With injured party",present1.value);
 line("Employees present",present2.value);
 line("Others",present3.value);
 
-line("Injured party name/address",injured1.value);
-line("Customer/Employee/Other",injured2.value);
+line("Injured name/address",injured1.value);
+line("Customer / Employee / Other",injured2.value);
 line("Approx age",injured3.value);
 line("Footwear",injured4.value);
 line("Carrying anything",injured5.value);
 line("Nature of injuries",injured6.value);
 
-line("Treatment given",treatment.value);
+line("Treatment",treatment.value);
 line("Employee absence",absence.value);
-line("Store expenses",expenses.value);
+line("Expenses",expenses.value);
+
 
 if(!signaturePad.isEmpty()){
 
@@ -378,15 +396,32 @@ pdf.addImage(sig,'PNG',20,30,60,30);
 
 }
 
-await addPhoto(pdf,w1.files[0],"Witness Photo 1");
-await addPhoto(pdf,w2.files[0],"Witness Photo 2");
-await addPhoto(pdf,w3.files[0],"Witness Photo 3");
+
+/* PHOTO ATTACHMENTS */
+
+await addPhoto(pdf,w1.files[0],"Witness 1 Photo");
+await addPhoto(pdf,w2.files[0],"Witness 2 Photo");
+await addPhoto(pdf,w3.files[0],"Witness 3 Photo");
 
 await addPhoto(pdf,scene1.files[0],"Scene Photo 1");
 await addPhoto(pdf,scene2.files[0],"Scene Photo 2");
 await addPhoto(pdf,scene3.files[0],"Scene Photo 3");
 
+
+/* EXPORT */
+
 const blob=pdf.output("blob");
+
+const file=new File([blob],"Incident_Report.pdf",{type:"application/pdf"});
+
+if(navigator.share){
+
+navigator.share({
+title:"SuperValu Incident Report",
+files:[file]
+});
+
+}else{
 
 const link=document.createElement("a");
 
@@ -395,6 +430,8 @@ link.href=URL.createObjectURL(blob);
 link.download="Incident_Report.pdf";
 
 link.click();
+
+}
 
 }
 

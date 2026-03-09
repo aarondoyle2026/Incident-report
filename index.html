@@ -129,17 +129,51 @@ Description: ${document.getElementById("description").value}
 Cause: ${document.getElementById("cause").value}
 `;
 
-if(navigator.share){
-navigator.share({
-title:"Accident Report",
-text:text
-});
-}else{
-alert("Use your phone share option to email the report.");
-}
+let subject = "SuperValu Incident Report";
+
+let body = text + "\n\nFull Report:\nhttps://aarondoyle2026.github.io/Incident-report/";
+
+window.location.href =
+"mailto:?subject=" + encodeURIComponent(subject) +
+"&body=" + encodeURIComponent(body);
 }
 
 </script>
+<script>
 
+function emailReport() {
+
+let store = document.getElementById("store").value;
+let manager = document.getElementById("manager").value;
+let date = document.getElementById("date").value;
+let time = document.getElementById("time").value;
+let location = document.getElementById("location").value;
+let description = document.getElementById("description").value;
+let cause = document.getElementById("cause").value;
+
+let reportLink =
+`https://aarondoyle2026.github.io/Incident-report/?store=${encodeURIComponent(store)}&manager=${encodeURIComponent(manager)}&date=${date}&time=${time}&location=${encodeURIComponent(location)}&description=${encodeURIComponent(description)}&cause=${encodeURIComponent(cause)}`;
+
+let subject = `SuperValu Incident Report - ${store} - ${date}`;
+
+let body =
+`A SuperValu incident report has been submitted.
+
+Store: ${store}
+Manager: ${manager}
+Date: ${date}
+Time: ${time}
+
+Open the completed report here:
+${reportLink}
+
+The report can be printed or saved as a PDF from a computer.`;
+
+window.location.href =
+`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+}
+
+</script>
 </body>
 </html>

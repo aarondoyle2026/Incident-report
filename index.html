@@ -3,7 +3,7 @@
 <head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SuperValu Accident / Incident Report</title>
+<title>Moriarty Group Accident Report</title>
 
 <style>
 
@@ -18,13 +18,11 @@ text-align:center;
 margin-bottom:5px;
 }
 
-h3{
-margin-top:0;
-}
-
-.headerLine{
-border-bottom:2px solid #000;
-margin-bottom:20px;
+.section{
+background:white;
+padding:15px;
+margin-bottom:15px;
+border-radius:6px;
 }
 
 label{
@@ -33,21 +31,13 @@ display:block;
 margin-top:10px;
 }
 
-input, textarea{
+input,textarea{
 width:100%;
 padding:10px;
 margin-top:5px;
-margin-bottom:15px;
+margin-bottom:10px;
 font-size:16px;
 box-sizing:border-box;
-}
-
-.section{
-background:white;
-padding:15px;
-margin-bottom:15px;
-border-radius:6px;
-border:1px solid #ddd;
 }
 
 button{
@@ -61,15 +51,15 @@ border-radius:5px;
 margin-top:10px;
 }
 
-.small{
-background:#666;
-}
-
 #signature-pad{
 border:2px solid #ccc;
 background:white;
 width:100%;
 height:200px;
+}
+
+.small{
+background:#666;
 }
 
 </style>
@@ -81,10 +71,7 @@ height:200px;
 
 <body>
 
-<h2>Moriarty Group (SuperValu)</h2>
-<h3 style="text-align:center;">ACCIDENT / INCIDENT REPORT FORM</h3>
-<div class="headerLine"></div>
-
+<h2>Moriarty Group (SuperValu)<br>Accident / Incident Report</h2>
 
 <div class="section">
 
@@ -94,6 +81,9 @@ height:200px;
 <label>Manager</label>
 <input id="manager">
 
+<label>Phone</label>
+<input id="phone">
+
 <label>Date</label>
 <input type="date" id="date">
 
@@ -102,84 +92,133 @@ height:200px;
 
 </div>
 
-
 <div class="section">
 
 <h3>Particulars of Accident</h3>
 
-<label>Exact location in store</label>
-<input id="location">
+<label>1. State day, date and time of accident</label>
+<textarea id="q1"></textarea>
 
-<label>Description of incident</label>
-<textarea id="description"></textarea>
+<label>2. To whom and when was it reported</label>
+<textarea id="q2"></textarea>
 
-<label>Cause of accident</label>
-<textarea id="cause"></textarea>
+<label>3. Who reported the accident</label>
+<textarea id="q3"></textarea>
 
-</div>
+<label>4. Where precisely did it happen</label>
+<textarea id="q4"></textarea>
 
+<label>5. State fully what happened</label>
+<textarea id="q5"></textarea>
 
-<div class="section">
+<label>6. Cause of accident</label>
+<textarea id="q6"></textarea>
 
-<h3>Evidence Photos</h3>
+<label>7. Condition of floor</label>
+<textarea id="q7"></textarea>
 
-<label>Scene photo</label>
-<input type="file" id="scenePhoto" accept="image/*" capture="environment">
-
-<label>Hazard photo</label>
-<input type="file" id="hazardPhoto" accept="image/*">
-
-<label>Product / shelf photo</label>
-<input type="file" id="productPhoto" accept="image/*">
-
-<label>Injury photo</label>
-<input type="file" id="injuryPhoto" accept="image/*">
-
-<label>Additional photos</label>
-<input type="file" id="additionalPhotos" accept="image/*" multiple>
+<label>8. Weather conditions</label>
+<textarea id="q8"></textarea>
 
 </div>
 
-
 <div class="section">
 
-<h3>Witness Statements</h3>
+<h3>Witness</h3>
 
-<label>Witness 1 statement</label>
-<textarea id="w1"></textarea>
-<input type="file" id="w1p" accept="image/*">
+<label>Was the accident witnessed</label>
+<input id="witnessed">
 
-<label>Witness 2 statement</label>
-<textarea id="w2"></textarea>
-<input type="file" id="w2p" accept="image/*">
-
-<label>Witness 3 statement</label>
-<textarea id="w3"></textarea>
-<input type="file" id="w3p" accept="image/*">
+<label>Witness names and addresses</label>
+<textarea id="witnessNames"></textarea>
 
 </div>
 
+<div class="section">
+
+<h3>Who Was Present</h3>
+
+<label>With injured party</label>
+<textarea id="present1"></textarea>
+
+<label>Our employees</label>
+<textarea id="present2"></textarea>
+
+<label>Others</label>
+<textarea id="present3"></textarea>
+
+</div>
 
 <div class="section">
 
-<h3>Manager Section</h3>
+<h3>Injured Party</h3>
 
-<label>Manager name</label>
-<input id="managerName">
+<label>Name / Address</label>
+<textarea id="injured1"></textarea>
+
+<label>Customer / Employee / Other</label>
+<input id="injured2">
+
+<label>Approx Age</label>
+<input id="injured3">
+
+<label>Footwear</label>
+<textarea id="injured4"></textarea>
+
+<label>Carrying anything</label>
+<textarea id="injured5"></textarea>
+
+<label>Nature of injuries</label>
+<textarea id="injured6"></textarea>
+
+</div>
+
+<div class="section">
+
+<h3>Treatment</h3>
 
 <label>Treatment given</label>
 <textarea id="treatment"></textarea>
 
-<label>Manager Signature</label>
+<label>Employee absence</label>
+<textarea id="absence"></textarea>
+
+<label>Paid store expenses</label>
+<textarea id="expenses"></textarea>
+
+</div>
+
+<div class="section">
+
+<h3>Witness Photos</h3>
+
+<input type="file" id="w1" accept="image/*">
+<input type="file" id="w2" accept="image/*">
+<input type="file" id="w3" accept="image/*">
+
+</div>
+
+<div class="section">
+
+<h3>Scene Photos</h3>
+
+<input type="file" id="scene1" accept="image/*">
+<input type="file" id="scene2" accept="image/*">
+<input type="file" id="scene3" accept="image/*">
+
+</div>
+
+<div class="section">
+
+<h3>Signature</h3>
+
 <canvas id="signature-pad"></canvas>
 
 <button class="small" onclick="clearSignature()">Clear Signature</button>
 
 </div>
 
-
-<button onclick="generateReport()">Generate & Share Report</button>
-
+<button onclick="generateReport()">Generate Report</button>
 
 <script>
 
@@ -196,13 +235,9 @@ signaturePad=new SignaturePad(canvas);
 
 }
 
-
 function clearSignature(){
 signaturePad.clear();
 }
-
-
-/* IMAGE COMPRESSION */
 
 function compressImage(file){
 
@@ -223,6 +258,7 @@ const maxWidth=1200;
 const scale=maxWidth/img.width;
 
 canvas.width=maxWidth;
+
 canvas.height=img.height*scale;
 
 const ctx=canvas.getContext("2d");
@@ -243,10 +279,7 @@ reader.readAsDataURL(file);
 
 }
 
-
-/* ADD PHOTO PAGE */
-
-async function addPhotoPage(pdf,file,title){
+async function addPhoto(pdf,file,title){
 
 if(!file) return;
 
@@ -254,19 +287,14 @@ const img=await compressImage(file);
 
 pdf.addPage();
 
-pdf.setFont("helvetica","bold");
-pdf.setFontSize(14);
-
+pdf.setFontSize(12);
 pdf.text(title,20,20);
 
-pdf.line(20,24,190,24);
+pdf.line(20,22,190,22);
 
 pdf.addImage(img,'JPEG',10,30,190,250);
 
 }
-
-
-/* GENERATE PDF */
 
 async function generateReport(){
 
@@ -274,50 +302,69 @@ const { jsPDF } = window.jspdf;
 
 const pdf=new jsPDF();
 
-const store=document.getElementById("store").value;
-const manager=document.getElementById("manager").value;
-const date=document.getElementById("date").value;
-const time=document.getElementById("time").value;
-const location=document.getElementById("location").value;
-const description=document.getElementById("description").value;
-const cause=document.getElementById("cause").value;
-
 pdf.setFont("helvetica","bold");
 pdf.setFontSize(14);
 
-pdf.text("MORIARTY GROUP (SUPERVALU)",20,20);
+pdf.text("MORIARTY GROUP (SUPERVALU)",20,18);
+pdf.text("ACCIDENT / INCIDENT REPORT FORM",20,26);
 
-pdf.setFontSize(12);
-pdf.text("ACCIDENT / INCIDENT REPORT FORM",20,28);
+pdf.line(20,30,190,30);
 
-pdf.line(20,32,190,32);
-
-pdf.setFontSize(10);
 pdf.setFont("helvetica","normal");
+pdf.setFontSize(9);
 
-let y=42;
+let y=40;
 
-pdf.text(`Store: ${store}`,20,y); y+=6;
-pdf.text(`Manager: ${manager}`,20,y); y+=6;
-pdf.text(`Date: ${date}`,20,y); y+=6;
-pdf.text(`Time: ${time}`,20,y); y+=10;
+function line(label,value){
 
-pdf.setFont("helvetica","bold");
-pdf.text("PARTICULARS OF ACCIDENT",20,y);
+pdf.text(label,20,y);
 pdf.line(20,y+2,190,y+2);
-y+=8;
 
-pdf.setFont("helvetica","normal");
+y+=6;
 
-pdf.text("Location",20,y); y+=5;
-pdf.text(pdf.splitTextToSize(location,170),20,y); y+=10;
+if(value){
 
-pdf.text("Description",20,y); y+=5;
-pdf.text(pdf.splitTextToSize(description,170),20,y); y+=10;
+const text=pdf.splitTextToSize(value,170);
 
-pdf.text("Cause",20,y); y+=5;
-pdf.text(pdf.splitTextToSize(cause,170),20,y); y+=10;
+pdf.text(text,20,y);
 
+y+=text.length*5;
+
+}
+
+y+=4;
+
+}
+
+line("Store: "+store.value+"   Manager: "+manager.value+"   Phone: "+phone.value);
+line("Date: "+date.value+"   Time: "+time.value);
+
+line("1. State day, date and time of accident",q1.value);
+line("2. To whom and when was it reported",q2.value);
+line("3. Who reported the accident",q3.value);
+line("4. Where precisely did it happen",q4.value);
+line("5. State fully what happened",q5.value);
+line("6. Cause of accident",q6.value);
+line("7. Condition of floor",q7.value);
+line("8. Weather conditions",q8.value);
+
+line("Was accident witnessed",witnessed.value);
+line("Witness names",witnessNames.value);
+
+line("With injured party",present1.value);
+line("Employees present",present2.value);
+line("Others",present3.value);
+
+line("Injured party name/address",injured1.value);
+line("Customer/Employee/Other",injured2.value);
+line("Approx age",injured3.value);
+line("Footwear",injured4.value);
+line("Carrying anything",injured5.value);
+line("Nature of injuries",injured6.value);
+
+line("Treatment given",treatment.value);
+line("Employee absence",absence.value);
+line("Store expenses",expenses.value);
 
 if(!signaturePad.isEmpty()){
 
@@ -331,54 +378,23 @@ pdf.addImage(sig,'PNG',20,30,60,30);
 
 }
 
+await addPhoto(pdf,w1.files[0],"Witness Photo 1");
+await addPhoto(pdf,w2.files[0],"Witness Photo 2");
+await addPhoto(pdf,w3.files[0],"Witness Photo 3");
 
-/* WITNESS SECTIONS */
-
-await addPhotoPage(pdf,document.getElementById("w1p").files[0],"Witness 1 Statement Photo");
-await addPhotoPage(pdf,document.getElementById("w2p").files[0],"Witness 2 Statement Photo");
-await addPhotoPage(pdf,document.getElementById("w3p").files[0],"Witness 3 Statement Photo");
-
-
-/* SCENE PHOTOS */
-
-await addPhotoPage(pdf,document.getElementById("scenePhoto").files[0],"Scene Photo");
-await addPhotoPage(pdf,document.getElementById("hazardPhoto").files[0],"Hazard Photo");
-await addPhotoPage(pdf,document.getElementById("productPhoto").files[0],"Product / Shelf Photo");
-await addPhotoPage(pdf,document.getElementById("injuryPhoto").files[0],"Injury Photo");
-
-
-const additional=document.getElementById("additionalPhotos").files;
-
-for(let i=0;i<additional.length;i++){
-
-await addPhotoPage(pdf,additional[i],"Additional Photo");
-
-}
-
-
-/* EXPORT */
+await addPhoto(pdf,scene1.files[0],"Scene Photo 1");
+await addPhoto(pdf,scene2.files[0],"Scene Photo 2");
+await addPhoto(pdf,scene3.files[0],"Scene Photo 3");
 
 const blob=pdf.output("blob");
-
-const file=new File([blob],"Incident_Report.pdf",{type:"application/pdf"});
-
-if(navigator.share){
-
-navigator.share({
-title:"SuperValu Incident Report",
-files:[file]
-});
-
-}else{
 
 const link=document.createElement("a");
 
 link.href=URL.createObjectURL(blob);
+
 link.download="Incident_Report.pdf";
 
 link.click();
-
-}
 
 }
 

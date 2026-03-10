@@ -249,8 +249,6 @@ signaturePad.clear();
 }
 
 
-/* IMAGE COMPRESSION */
-
 function compressImage(file){
 
 return new Promise(resolve=>{
@@ -291,7 +289,6 @@ reader.readAsDataURL(file);
 }
 
 
-/* PHOTO PAGE */
 
 async function addPhoto(pdf,file,title){
 
@@ -305,15 +302,13 @@ pdf.setFont("helvetica","bold");
 pdf.setFontSize(12);
 
 pdf.text(title,20,20);
+pdf.line(20,24,190,24);
 
-pdf.line(20,22,190,22);
-
-pdf.addImage(img,'JPEG',10,30,190,250);
+pdf.addImage(img,'JPEG',15,30,180,220);
 
 }
 
 
-/* GENERATE REPORT */
 
 async function generateReport(){
 
@@ -321,33 +316,55 @@ const { jsPDF } = window.jspdf;
 
 const pdf=new jsPDF();
 
+
+
 pdf.setFont("helvetica","bold");
-pdf.setFontSize(14);
+pdf.setFontSize(16);
 
 pdf.text("MORIARTY GROUP (SUPERVALU)",20,20);
+
+pdf.setFontSize(13);
+
 pdf.text("ACCIDENT / INCIDENT REPORT FORM",20,28);
 
 pdf.line(20,32,190,32);
+
+
 
 pdf.setFont("helvetica","normal");
 pdf.setFontSize(10);
 
 let y=42;
 
-function line(label,value){
 
-pdf.text(label,20,y);
-y+=5;
-pdf.text(pdf.splitTextToSize(value,170),20,y);
+
+pdf.text(`Store: ${store.value}`,20,y);
+pdf.text(`Manager: ${manager.value}`,90,y);
+pdf.text(`Phone: ${phone.value}`,150,y);
+
 y+=8;
+
+pdf.text(`Date: ${date.value}`,20,y);
+pdf.text(`Time: ${time.value}`,90,y);
+
+y+=12;
+
+
+
+function question(q,a){
+
+pdf.text(q,20,y);
+y+=5;
+
+let text=pdf.splitTextToSize(a,170);
+
+pdf.text(text,20,y);
+
+y+=text.length*5 + 4;
 
 }
 
-line("Store",store.value);
-line("Manager",manager.value);
-line("Phone",phone.value);
-line("Date",date.value);
-line("Time",time.value);
+
 
 pdf.setFont("helvetica","bold");
 pdf.text("PARTICULARS OF ACCIDENT",20,y);
@@ -356,48 +373,82 @@ y+=8;
 
 pdf.setFont("helvetica","normal");
 
-line("1. State day, date and time of accident",q1.value);
-line("2. To whom and when was it reported",q2.value);
-line("3. Who reported the accident",q3.value);
-line("4. Where precisely did it happen",q4.value);
-line("5. State fully what happened",q5.value);
-line("6. Cause of accident",q6.value);
-line("7. Condition of floor",q7.value);
-line("8. Weather conditions",q8.value);
+question("1. State day, date and time of accident",q1.value);
+question("2. To whom and when was it reported",q2.value);
+question("3. Who reported the accident",q3.value);
+question("4. Where precisely did it happen",q4.value);
+question("5. State fully what happened",q5.value);
+question("6. Cause of accident",q6.value);
+question("7. Condition of floor",q7.value);
+question("8. Weather conditions",q8.value);
 
-line("Witnessed",witnessed.value);
-line("Witness names",witnessNames.value);
 
-line("With injured party",present1.value);
-line("Employees present",present2.value);
-line("Others",present3.value);
 
-line("Injured name/address",injured1.value);
-line("Customer / Employee / Other",injured2.value);
-line("Approx age",injured3.value);
-line("Footwear",injured4.value);
-line("Carrying anything",injured5.value);
-line("Nature of injuries",injured6.value);
+pdf.setFont("helvetica","bold");
+pdf.text("WITNESS",20,y);
+pdf.line(20,y+2,190,y+2);
+y+=8;
 
-line("Treatment",treatment.value);
-line("Employee absence",absence.value);
-line("Expenses",expenses.value);
+pdf.setFont("helvetica","normal");
+
+question("Was accident witnessed",witnessed.value);
+question("Witness names / addresses",witnessNames.value);
+
+
+
+pdf.setFont("helvetica","bold");
+pdf.text("WHO WAS PRESENT",20,y);
+pdf.line(20,y+2,190,y+2);
+y+=8;
+
+pdf.setFont("helvetica","normal");
+
+question("With injured party",present1.value);
+question("Our employees",present2.value);
+question("Others",present3.value);
+
+
+
+pdf.setFont("helvetica","bold");
+pdf.text("INJURED PARTY",20,y);
+pdf.line(20,y+2,190,y+2);
+y+=8;
+
+pdf.setFont("helvetica","normal");
+
+question("Name / Address",injured1.value);
+question("Customer / Employee / Other",injured2.value);
+question("Approx age",injured3.value);
+question("Footwear",injured4.value);
+question("Carrying anything",injured5.value);
+question("Nature of injuries",injured6.value);
+
+
+
+pdf.setFont("helvetica","bold");
+pdf.text("TREATMENT GIVEN",20,y);
+pdf.line(20,y+2,190,y+2);
+y+=8;
+
+pdf.setFont("helvetica","normal");
+
+question("Treatment",treatment.value);
+question("Employee absence",absence.value);
+question("Expenses",expenses.value);
+
 
 
 if(!signaturePad.isEmpty()){
 
 const sig=signaturePad.toDataURL();
 
-pdf.addPage();
+pdf.text("Manager Signature",20,y+10);
 
-pdf.text("Manager Signature",20,20);
-
-pdf.addImage(sig,'PNG',20,30,60,30);
+pdf.addImage(sig,'PNG',20,y+15,60,25);
 
 }
 
 
-/* PHOTO ATTACHMENTS */
 
 await addPhoto(pdf,w1.files[0],"Witness 1 Photo");
 await addPhoto(pdf,w2.files[0],"Witness 2 Photo");
@@ -408,7 +459,6 @@ await addPhoto(pdf,scene2.files[0],"Scene Photo 2");
 await addPhoto(pdf,scene3.files[0],"Scene Photo 3");
 
 
-/* EXPORT */
 
 const blob=pdf.output("blob");
 

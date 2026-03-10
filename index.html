@@ -259,8 +259,6 @@ signaturePad.clear();
 }
 
 
-/* IMAGE COMPRESSION */
-
 function compressImage(file){
 
 return new Promise(resolve=>{
@@ -316,7 +314,6 @@ pdf.line(20,24,190,24);
 pdf.addImage(img,'JPEG',15,30,180,220);
 
 }
-
 
 
 async function generateReport(){
@@ -390,15 +387,12 @@ question("6. Cause of accident",q6.value);
 question("7. Condition of floor",q7.value);
 question("8. Weather conditions",q8.value);
 
-
 question("Was accident witnessed",witnessed.value);
 question("Witness names / addresses",witnessNames.value);
-
 
 question("With injured party",present1.value);
 question("Our employees",present2.value);
 question("Others",present3.value);
-
 
 question("Name / Address",injured1.value);
 question("Customer / Employee / Other",injured2.value);
@@ -407,26 +401,29 @@ question("Footwear",injured4.value);
 question("Carrying anything",injured5.value);
 question("Nature of injuries",injured6.value);
 
-
 question("Treatment",treatment.value);
 question("Employee absence",absence.value);
 question("Expenses",expenses.value);
 
 
+/* SIGNATURE FIX */
+
 if(!signaturePad.isEmpty()){
 
-const sig=signaturePad.toDataURL();
+const sig = signaturePad.toDataURL();
 
-y+=8;
+let sigY = 260;
 
-pdf.text("Manager Signature",20,y);
+pdf.text("Manager Signature",20,sigY);
 
-pdf.line(20,y+4,100,y+4);
+pdf.line(20,sigY+4,100,sigY+4);
 
-pdf.addImage(sig,'PNG',22,y-18,60,20);
+pdf.addImage(sig,'PNG',22,sigY-20,60,20);
 
 }
 
+
+/* PHOTO ATTACHMENTS */
 
 await addPhoto(pdf,statement1photo.files[0],"Statement 1 Photo");
 await addPhoto(pdf,statement2photo.files[0],"Statement 2 Photo");

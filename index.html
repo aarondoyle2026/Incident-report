@@ -73,7 +73,6 @@ height:200px;
 
 <h2>Moriarty Group (SuperValu)<br>Accident / Incident Report</h2>
 
-
 <div class="section">
 
 <label>Store</label>
@@ -254,6 +253,7 @@ signaturePad=new SignaturePad(canvas);
 
 }
 
+
 function clearSignature(){
 signaturePad.clear();
 }
@@ -334,7 +334,6 @@ pdf.text("ACCIDENT / INCIDENT REPORT FORM",20,26);
 
 pdf.line(20,30,190,30);
 
-
 pdf.setFont("helvetica","normal");
 pdf.setFontSize(10);
 
@@ -406,19 +405,22 @@ question("Employee absence",absence.value);
 question("Expenses",expenses.value);
 
 
-/* SIGNATURE FIX */
+/* SIGNATURE PAGE */
+
+pdf.addPage();
+
+pdf.setFont("helvetica","bold");
+pdf.text("Manager Signature",20,40);
+
+pdf.setFont("helvetica","normal");
+
+pdf.line(20,50,190,50);
 
 if(!signaturePad.isEmpty()){
 
 const sig = signaturePad.toDataURL();
 
-let sigY = 285;
-
-pdf.text("Manager Signature",20,sigY);
-
-pdf.line(20,sigY+4,100,sigY+4);
-
-pdf.addImage(sig,'PNG',22,sigY-20,60,20);
+pdf.addImage(sig,'PNG',22,32,70,18);
 
 }
 

@@ -73,6 +73,7 @@ height:200px;
 
 <h2>Moriarty Group (SuperValu)<br>Accident / Incident Report</h2>
 
+
 <div class="section">
 
 <label>Store</label>
@@ -196,22 +197,31 @@ height:200px;
 
 <div class="section">
 
-<h3>Witness Photos</h3>
+<h3>Statement 1</h3>
+<textarea id="statement1"></textarea>
+<label>Statement Photo</label>
+<input type="file" id="statement1photo" accept="image/*">
 
-<input type="file" id="w1" accept="image/*">
-<input type="file" id="w2" accept="image/*">
-<input type="file" id="w3" accept="image/*">
+<h3>Statement 2</h3>
+<textarea id="statement2"></textarea>
+<label>Statement Photo</label>
+<input type="file" id="statement2photo" accept="image/*">
+
+<h3>Statement 3</h3>
+<textarea id="statement3"></textarea>
+<label>Statement Photo</label>
+<input type="file" id="statement3photo" accept="image/*">
 
 </div>
 
 
 <div class="section">
 
-<h3>Scene Photos</h3>
+<h3>Additional Photos</h3>
 
-<input type="file" id="scene1" accept="image/*">
-<input type="file" id="scene2" accept="image/*">
-<input type="file" id="scene3" accept="image/*">
+<input type="file" id="photo1" accept="image/*">
+<input type="file" id="photo2" accept="image/*">
+<input type="file" id="photo3" accept="image/*">
 
 </div>
 
@@ -291,8 +301,6 @@ reader.readAsDataURL(file);
 }
 
 
-/* PHOTO PAGE */
-
 async function addPhoto(pdf,file,title){
 
 if(!file) return;
@@ -302,8 +310,6 @@ const img=await compressImage(file);
 pdf.addPage();
 
 pdf.setFont("helvetica","bold");
-pdf.setFontSize(12);
-
 pdf.text(title,20,20);
 pdf.line(20,24,190,24);
 
@@ -312,7 +318,6 @@ pdf.addImage(img,'JPEG',15,30,180,220);
 }
 
 
-/* GENERATE REPORT */
 
 async function generateReport(){
 
@@ -320,7 +325,7 @@ const { jsPDF } = window.jspdf;
 
 const pdf=new jsPDF();
 
-
+pdf.setDrawColor(150);
 
 pdf.setFont("helvetica","bold");
 pdf.setFontSize(16);
@@ -333,27 +338,10 @@ pdf.text("ACCIDENT / INCIDENT REPORT FORM",20,26);
 pdf.line(20,30,190,30);
 
 
-
 pdf.setFont("helvetica","normal");
 pdf.setFontSize(10);
 
-pdf.setDrawColor(180);
-
 let y=42;
-
-
-
-pdf.text(`Store: ${store.value}`,20,y);
-pdf.text(`Manager: ${manager.value}`,80,y);
-pdf.text(`Phone: ${phone.value}`,140,y);
-
-y+=8;
-
-pdf.text(`Date: ${date.value}`,20,y);
-pdf.text(`Time: ${time.value}`,80,y);
-
-y+=12;
-
 
 
 function question(title,value){
@@ -373,10 +361,22 @@ y+=10;
 }
 
 
+pdf.text(`Store: ${store.value}`,20,y);
+pdf.text(`Manager: ${manager.value}`,80,y);
+pdf.text(`Phone: ${phone.value}`,140,y);
+
+y+=8;
+
+pdf.text(`Date: ${date.value}`,20,y);
+pdf.text(`Time: ${time.value}`,80,y);
+
+y+=12;
+
 
 pdf.setFont("helvetica","bold");
 pdf.text("PARTICULARS OF ACCIDENT",20,y);
 pdf.line(20,y+2,190,y+2);
+
 y+=6;
 
 pdf.setFont("helvetica","normal");
@@ -391,38 +391,14 @@ question("7. Condition of floor",q7.value);
 question("8. Weather conditions",q8.value);
 
 
-
-pdf.setFont("helvetica","bold");
-pdf.text("WITNESS",20,y);
-pdf.line(20,y+2,190,y+2);
-y+=6;
-
-pdf.setFont("helvetica","normal");
-
 question("Was accident witnessed",witnessed.value);
 question("Witness names / addresses",witnessNames.value);
 
-
-
-pdf.setFont("helvetica","bold");
-pdf.text("WHO WAS PRESENT",20,y);
-pdf.line(20,y+2,190,y+2);
-y+=6;
-
-pdf.setFont("helvetica","normal");
 
 question("With injured party",present1.value);
 question("Our employees",present2.value);
 question("Others",present3.value);
 
-
-
-pdf.setFont("helvetica","bold");
-pdf.text("INJURED PARTY",20,y);
-pdf.line(20,y+2,190,y+2);
-y+=6;
-
-pdf.setFont("helvetica","normal");
 
 question("Name / Address",injured1.value);
 question("Customer / Employee / Other",injured2.value);
@@ -432,18 +408,9 @@ question("Carrying anything",injured5.value);
 question("Nature of injuries",injured6.value);
 
 
-
-pdf.setFont("helvetica","bold");
-pdf.text("TREATMENT GIVEN",20,y);
-pdf.line(20,y+2,190,y+2);
-y+=6;
-
-pdf.setFont("helvetica","normal");
-
 question("Treatment",treatment.value);
 question("Employee absence",absence.value);
 question("Expenses",expenses.value);
-
 
 
 if(!signaturePad.isEmpty()){
@@ -461,20 +428,14 @@ pdf.addImage(sig,'PNG',22,y-18,60,20);
 }
 
 
+await addPhoto(pdf,statement1photo.files[0],"Statement 1 Photo");
+await addPhoto(pdf,statement2photo.files[0],"Statement 2 Photo");
+await addPhoto(pdf,statement3photo.files[0],"Statement 3 Photo");
 
-/* PHOTO ATTACHMENTS */
+await addPhoto(pdf,photo1.files[0],"Additional Photo 1");
+await addPhoto(pdf,photo2.files[0],"Additional Photo 2");
+await addPhoto(pdf,photo3.files[0],"Additional Photo 3");
 
-await addPhoto(pdf,w1.files[0],"Witness 1 Photo");
-await addPhoto(pdf,w2.files[0],"Witness 2 Photo");
-await addPhoto(pdf,w3.files[0],"Witness 3 Photo");
-
-await addPhoto(pdf,scene1.files[0],"Scene Photo 1");
-await addPhoto(pdf,scene2.files[0],"Scene Photo 2");
-await addPhoto(pdf,scene3.files[0],"Scene Photo 3");
-
-
-
-/* EXPORT */
 
 const blob=pdf.output("blob");
 

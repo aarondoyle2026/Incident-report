@@ -339,7 +339,26 @@ function showTab(name,el){document.querySelectorAll('.tab-content').forEach(t=>t
 // ================================================================
 // SIGNATURE
 // ================================================================
-function initSig(){const canvas=document.getElementById('sig-canvas');const dpr=window.devicePixelRatio||1;const rect=canvas.parentElement.getBoundingClientRect();canvas.width=(rect.width||340)*dpr;canvas.height=150*dpr;sigPad=new SignaturePad(canvas,{penColor:'#1a5e2a'});sigPad.addEventListener('beginStroke',()=>{const ph=canvas.parentElement.querySelector('.sig-placeholder');if(ph)ph.style.opacity='0';});}
+function initSig(){
+  var canvas=document.getElementById('sig-canvas');
+  if(!canvas)return;
+  sigPad=new SignaturePad(canvas,{penColor:'#1a5e2a'});
+  function resizeCanvas(){
+    var ratio=Math.max(window.devicePixelRatio||1,1);
+    canvas.width=canvas.offsetWidth*ratio;
+    canvas.height=canvas.offsetHeight*ratio;
+    canvas.style.width=canvas.offsetWidth+'px';
+    canvas.style.height=canvas.offsetHeight+'px';
+    canvas.getContext('2d').scale(ratio,ratio);
+    sigPad.clear();
+  }
+  window.addEventListener('resize',resizeCanvas);
+  setTimeout(resizeCanvas,50);
+  sigPad.addEventListener('beginStroke',function(){
+    var ph=canvas.parentElement.querySelector('.sig-placeholder');
+    if(ph)ph.style.opacity='0';
+  });
+}sigPad=new SignaturePad(canvas,{penColor:'#1a5e2a'});setTimeout(function(){resizeCanvas();},100);window.addEventListener('resize',resizeCanvas);sigPad.addEventListener('beginStroke',function(){var ph=canvas.parentElement.querySelector('.sig-placeholder');if(ph)ph.style.opacity='0';});}
 function clearSig(){if(sigPad)sigPad.clear();const ph=document.querySelector('#sig-canvas').parentElement.querySelector('.sig-placeholder');if(ph)ph.style.opacity='1';}
 
 // ================================================================
@@ -597,14 +616,8 @@ async function generatePDF(reportIn){
     doc.text('Moriarty Group · SuperValu · Incident Report · '+( r.store||'')+'  ·  Page '+i+' of '+totalPages,PW/2,PH-4,{align:'center'});
   }
 
-  const filename='IncidentReport_'+(r.store||'Store')+'_'+(r.date||'').replace(/-/g,'')+(r.time||'').replace(/:/g,'')+'.pdf';
-  const blob=doc.output('blob');
-  const file=new File([blob],filename,{type:'application/pdf'});
-  if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
-    navigator.share({title:'SuperValu Incident Report',files:[file]});
-  } else {
-    const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download=filename;link.click();
-  }
+  var filename='IncidentReport_'+(r.store||'Store')+'_'+(r.date||'').replace(/-/g,'')+(r.time||'').replace(/:/g,'')+'.pdf';
+  doc.save(filename);
 }
 
 // ================================================================

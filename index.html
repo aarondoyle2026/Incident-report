@@ -297,6 +297,11 @@ textarea{resize:vertical;min-height:70px;}
 // DB
 // ================================================================
 const DB_NAME='MoriartyIncidents',DB_VERSION=1,STORE_NAME='reports';
+const SB_URL='https://mnebkteiwjxbbmnfotse.supabase.co';
+const SB_KEY='sb_publishable_eutRHOftOW4ZJNlVrDKXOg_XtnBQ7cM';
+function sbFetch(path,method,body){return fetch(SB_URL+'/rest/v1/'+path,{method:method||'GET',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':method==='POST'?'resolution=merge-duplicates':''},body:body?JSON.stringify(body):undefined});}
+function sbPushReport(r){const row={id:String(r.id),store:r.store||'',saved_at:r.savedAt,data:r};return sbFetch('incident_reports','POST',[row]).catch(()=>{});}
+async function sbLoadAll(){try{const res=await sbFetch('incident_reports?order=saved_at.desc','GET');const rows=await res.json();if(!rows||rows.error)return null;return rows.map(r=>({...r.data,id:r.data.id||r.id}));}catch(e){return null;}}
 let db=null,activeRecordId=null,allRecords=[];
 
 function openDB(){return new Promise((res,rej)=>{const req=indexedDB.open(DB_NAME,DB_VERSION);req.onupgradeneeded=e=>{const d=e.target.result;if(!d.objectStoreNames.contains(STORE_NAME)){const s=d.createObjectStore(STORE_NAME,{keyPath:'id'});s.createIndex('date','date',{unique:false});}};req.onsuccess=e=>{db=e.target.result;res(db);};req.onerror=e=>rej(e.target.error);});}
@@ -309,7 +314,17 @@ function dbDelete(id){return new Promise((res,rej)=>{const tx=db.transaction(STO
 // ================================================================
 let sigPad=null;
 window.addEventListener('DOMContentLoaded',async()=>{
-  try{await openDB();allRecords=await dbGetAll();updateDBStatus();}catch(e){document.getElementById('db-status').textContent='⚠️ '+e.message;}
+  try{
+    await openDB();
+    const sbData=await sbLoadAll();
+    if(sbData&&sbData.length){
+      allRecords=sbData;
+      for(const r of sbData){try{await dbPut(r);}catch(e){}}
+    } else {
+      allRecords=await dbGetAll();
+    }
+    updateDBStatus();
+  }catch(e){document.getElementById('db-status').textContent='⚠️ '+e.message;}
   initSig();
   const today=new Date().toISOString().split('T')[0];
   document.getElementById('f-date').value=today;
@@ -363,7 +378,7 @@ function collectReport(){
 // ================================================================
 async function saveReport(){
   const report=collectReport();
-  try{await dbPut(report);allRecords=await dbGetAll();updateDBStatus();const msg=document.getElementById('form-success');msg.classList.add('show');setTimeout(()=>msg.classList.remove('show'),3000);renderRecords();}catch(e){alert('Save failed: '+e.message);}
+  try{await dbPut(report);sbPushReport(report).catch(()=>{});allRecords=await dbGetAll();updateDBStatus();const msg=document.getElementById('form-success');msg.classList.add('show');setTimeout(()=>msg.classList.remove('show'),3000);renderRecords();}catch(e){alert('Save failed: '+e.message);}
 }
 
 // ================================================================

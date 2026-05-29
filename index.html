@@ -2,41 +2,44 @@
 
 <html lang="en">
 <head>
+<script>
+(function(){var a=sessionStorage.getItem('portal_auth_token');if(a){sessionStorage.removeItem('portal_auth_token');}else{localStorage.removeItem('portal_session');window.location.replace('https://aarondoyle2026.github.io/login.html?to='+encodeURIComponent(window.location.href));}})();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Moriarty Group – Incident Report</title>
+<title>SuperValu – Incident Report</title>
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{font-family:'DM Sans',sans-serif;background:#f4f5f0;color:#1a1f18;min-height:100vh;padding-bottom:100px;}
-.app-header{background:#1a5e2a;color:white;padding:14px 16px 12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.2);}
+.app-header{background:#e41e26;color:white;padding:14px 16px 12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.2);}
 .app-header .logo-row{display:flex;align-items:center;justify-content:space-between;}
 .app-header .brand{font-size:14px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;}
 .app-header .sub{font-size:11px;opacity:0.7;margin-top:1px;}
-.sv-badge{background:white;color:#1a5e2a;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:0.05em;}
+.sv-badge{background:white;color:#e41e26;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:0.05em;}
 .nav-tabs{display:flex;background:white;border-bottom:2px solid #d8dbd2;position:sticky;top:57px;z-index:90;}
 .nav-tab{flex:1;padding:12px 8px;font-size:11px;font-weight:700;color:#6b7266;cursor:pointer;text-align:center;border-bottom:2.5px solid transparent;margin-bottom:-2px;transition:all 0.15s;letter-spacing:0.04em;text-transform:uppercase;}
-.nav-tab.active{color:#1a5e2a;border-bottom-color:#1a5e2a;}
+.nav-tab.active{color:#e41e26;border-bottom-color:#e41e26;}
 .tab-content{display:none;padding:14px;}
 .tab-content.active{display:block;}
 /* Cards */
 .card{background:white;border-radius:12px;border:1px solid #d8dbd2;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
 .card-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#6b7266;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-.card-title::before{content:'';display:block;width:3px;height:13px;background:#1a5e2a;border-radius:2px;}
+.card-title::before{content:'';display:block;width:3px;height:13px;background:#e41e26;border-radius:2px;}
 /* Fields */
 .field-label{font-size:10px;font-weight:700;color:#6b7266;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;margin-top:12px;display:block;}
 .field-label:first-child{margin-top:0;}
 input[type="text"],input[type="date"],input[type="time"],input[type="tel"],textarea,select{width:100%;background:#f4f5f0;border:1.5px solid #d8dbd2;border-radius:8px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:15px;color:#1a1f18;outline:none;transition:border-color 0.15s;-webkit-appearance:none;}
-input:focus,textarea:focus,select:focus{border-color:#1a5e2a;background:white;}
+input:focus,textarea:focus,select:focus{border-color:#e41e26;background:white;}
 textarea{resize:vertical;min-height:70px;}
 .row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
 /* Buttons */
 .btn{display:block;width:100%;padding:13px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;border:none;transition:all 0.15s;text-align:center;}
-.btn-primary{background:#1a5e2a;color:white;}
-.btn-secondary{background:white;color:#1a5e2a;border:1.5px solid #1a5e2a;padding:8px;font-size:13px;}
+.btn-primary{background:#e41e26;color:white;}
+.btn-secondary{background:white;color:#e41e26;border:1.5px solid #e41e26;padding:8px;font-size:13px;}
 .btn-danger{background:white;color:#c8102e;border:1.5px solid #c8102e;}
 .btn-dark{background:#1a1f18;color:white;}
 .btn-sm{padding:7px 12px;font-size:12px;width:auto;border-radius:8px;}
@@ -54,15 +57,15 @@ textarea{resize:vertical;min-height:70px;}
 .photo-thumb-wrap img{width:100%;height:100%;object-fit:cover;}
 .photo-thumb-wrap .rm-photo{position:absolute;top:3px;right:3px;background:rgba(0,0,0,0.65);color:white;border:none;border-radius:50%;width:20px;height:20px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 /* Success */
-.form-success{background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;padding:11px 14px;font-size:14px;font-weight:600;color:#2e7d32;margin-bottom:12px;display:none;align-items:center;gap:8px;}
+.form-success{background:#fdecea;border:1px solid #f0aaaa;border-radius:8px;padding:11px 14px;font-size:14px;font-weight:600;color:#c0161c;margin-bottom:12px;display:none;align-items:center;gap:8px;}
 .form-success.show{display:flex;}
 /* Records list */
 .record-item{background:white;border:1px solid #d8dbd2;border-top:none;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
 .record-item:first-child{border-top:1px solid #d8dbd2;border-radius:10px 10px 0 0;}
 .record-item:last-child{border-radius:0 0 10px 10px;}
 .record-item:only-child{border-radius:10px;}
-.record-item:active{background:#f0f4f0;}
-.rec-store{font-size:13px;font-weight:700;color:#1a5e2a;}
+.record-item:active{background:#fdf0f0;}
+.rec-store{font-size:13px;font-weight:700;color:#e41e26;}
 .rec-meta{font-size:11px;color:#6b7266;margin-top:2px;font-family:'DM Mono',monospace;}
 .rec-arrow{color:#d8dbd2;font-size:20px;}
 .empty-state{text-align:center;padding:40px 20px;color:#6b7266;}
@@ -77,7 +80,7 @@ textarea{resize:vertical;min-height:70px;}
 .modal-actions{display:grid;grid-template-columns:auto 1fr 1fr;gap:8px;margin-top:16px;}
 /* Detail view */
 .detail-section{margin-bottom:16px;}
-.detail-section-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#1a5e2a;margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid #e8f5e9;}
+.detail-section-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#e41e26;margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid #fdecea;}
 .detail-field{margin-bottom:8px;}
 .detail-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#6b7266;}
 .detail-value{font-size:13px;margin-top:2px;color:#1a1f18;line-height:1.4;}
@@ -96,14 +99,14 @@ textarea{resize:vertical;min-height:70px;}
 .data-tool-btn .dt-label{font-size:12px;font-weight:700;color:#1a1f18;}
 .data-tool-btn .dt-sub{font-size:10px;color:#6b7266;margin-top:2px;}
 .db-status{font-size:11px;color:#6b7266;text-align:center;margin-bottom:12px;font-family:'DM Mono',monospace;}
-.db-status.ok{color:#2e7d32;}
+.db-status.ok{color:#c0161c;}
 </style>
 </head>
 <body>
 
 <div class="app-header">
   <div class="logo-row">
-    <div><div class="brand">Moriarty Group</div><div class="sub">SuperValu · Incident Reports</div></div>
+    <div><div class="brand">SuperValu</div><div class="sub">SuperValu · Incident Reports</div></div>
     <div class="sv-badge">SUPERVALU</div>
   </div>
 </div>
@@ -351,7 +354,7 @@ function initSig(){
     canvas.width=canvas.parentElement.offsetWidth*ratio;
     canvas.height=150*ratio;
     canvas.getContext('2d').scale(ratio,ratio);
-    sigPad=new SignaturePad(canvas,{penColor:'#1a5e2a',minWidth:1,maxWidth:3});
+    sigPad=new SignaturePad(canvas,{penColor:'#e41e26',minWidth:1,maxWidth:3});
     sigPad.addEventListener('beginStroke',function(){
       var ph=canvas.parentElement.querySelector('.sig-placeholder');
       if(ph)ph.style.opacity='0';
@@ -411,7 +414,7 @@ function renderRecords(){
   sorted.forEach(r=>{const store=r.store||'Unknown Store';if(!grouped[store])grouped[store]=[];grouped[store].push(r);});
   let html='';
   Object.keys(grouped).sort().forEach(store=>{
-    html+='<div style="margin-bottom:20px;"><div style="background:#1a5e2a;color:white;padding:9px 13px;border-radius:10px 10px 0 0;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;display:flex;justify-content:space-between;"><span>📍 '+esc(store)+'</span><span>'+grouped[store].length+' report'+(grouped[store].length!==1?'s':'')+'</span></div>';
+    html+='<div style="margin-bottom:20px;"><div style="background:#e41e26;color:white;padding:9px 13px;border-radius:10px 10px 0 0;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;display:flex;justify-content:space-between;"><span>📍 '+esc(store)+'</span><span>'+grouped[store].length+' report'+(grouped[store].length!==1?'s':'')+'</span></div>';
     grouped[store].forEach(r=>{
       const dt=r.date||r.savedAt.split('T')[0];
       const summary=(r.q4||r.q5||'').substring(0,60)+(r.q4&&r.q4.length>60?'…':'');
@@ -613,7 +616,7 @@ async function generatePDF(reportIn){
     doc.setPage(i);
     doc.setFillColor(...GREEN);doc.rect(0,PH-10,PW,10,'F');
     doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(255,255,255);
-    doc.text('Moriarty Group · SuperValu · Incident Report · '+( r.store||'')+'  ·  Page '+i+' of '+totalPages,PW/2,PH-4,{align:'center'});
+    doc.text('SuperValu · SuperValu · Incident Report · '+( r.store||'')+'  ·  Page '+i+' of '+totalPages,PW/2,PH-4,{align:'center'});
   }
 
   var filename='IncidentReport_'+(r.store||'Store')+'_'+(r.date||'').replace(/-/g,'')+(r.time||'').replace(/:/g,'')+'.pdf';
